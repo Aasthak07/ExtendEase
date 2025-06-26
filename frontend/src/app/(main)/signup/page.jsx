@@ -1,70 +1,59 @@
-
-
 'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-
-function getPasswordStrength(password) {
-  let score = 0;
-  if (password.length >= 8) score++;
-  if (/[A-Z]/.test(password)) score++;
-  if (/[0-9]/.test(password)) score++;
-  if (/[^A-Za-z0-9]/.test(password)) score++;
-  return score;
-}
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import axios from 'axios';
 
 export default function SignupPage() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [touched, setTouched] = useState({});
   const router = useRouter();
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePassword = (password) =>
-    password.length >= 8 &&
-    /[A-Z]/.test(password) &&
-    /[0-9]/.test(password) &&
-    /[^A-Za-z0-9]/.test(password);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields');
-      return;
-    }
-
-    if (!validateEmail(email)) {
-      setError('Please enter a valid email address');
-      return;
-    }
-
-    if (!validatePassword(password)) {
-      setError(
-        'Password must be at least 8 characters, include an uppercase letter, a number, and a special character.'
-      );
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/login');
-    }, 1000);
-  };
+  const formik = useFormik({
+    initialValues: {
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    },
+    validationSchema: Yup.object({
+      firstName: Yup.string().required('First name is required'),
+      lastName: Yup.string().required('Last name is required'),
+      email: Yup.string().email('Invalid email address').required('Email is required'),
+      password: Yup.string()
+        .min(8, 'Password must be at least 8 characters')
+        .matches(/[A-Z]/, 'Must contain an uppercase letter')
+        .matches(/[0-9]/, 'Must contain a number')
+        .matches(/[^A-Za-z0-9]/, 'Must contain a special character')
+        .required('Password is required'),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .required('Confirm your password'),
+    }),
+    onSubmit: async (values, { setSubmitting }) => {
+      setError('');
+      setIsLoading(true);
+      try {
+        await axios.post('http://localhost:5000/user/add', {
+          firstName: values.firstName,
+          lastName: values.lastName,
+          email: values.email,
+          password: values.password,
+        });
+        setIsLoading(false);
+        router.push('/login');
+      } catch (err) {
+        setIsLoading(false);
+        setError(
+          err.response?.data?.message || 'Signup failed. Please try again.'
+        );
+      }
+    },
+  });
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -96,28 +85,38 @@ export default function SignupPage() {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={formik.handleSubmit} className="space-y-5">
           {/* Name section */}
           <div className="flex gap-4">
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
               <input
                 type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
+                name="firstName"
+                value={formik.values.firstName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 placeholder="First"
               />
+              {formik.touched.firstName && formik.errors.firstName && (
+                <div className="text-xs text-red-600 mt-1">{formik.errors.firstName}</div>
+              )}
             </div>
             <div className="flex-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
               <input
                 type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
+                name="lastName"
+                value={formik.values.lastName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
                 placeholder="Last"
               />
+              {formik.touched.lastName && formik.errors.lastName && (
+                <div className="text-xs text-red-600 mt-1">{formik.errors.lastName}</div>
+              )}
             </div>
           </div>
 
@@ -126,14 +125,15 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Email address</label>
             <input
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, email: true }))}
+              name="email"
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Enter your email"
             />
-            {touched.email && email && !validateEmail(email) && (
-              <div className="text-xs text-red-600 mt-1">Invalid email address</div>
+            {formik.touched.email && formik.errors.email && (
+              <div className="text-xs text-red-600 mt-1">{formik.errors.email}</div>
             )}
           </div>
 
@@ -142,12 +142,16 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
               type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => setTouched((t) => ({ ...t, password: true }))}
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Create a password"
             />
+            {formik.touched.password && formik.errors.password && (
+              <div className="text-xs text-red-600 mt-1">{formik.errors.password}</div>
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -155,13 +159,15 @@ export default function SignupPage() {
             <label className="block text-sm font-medium text-gray-700 mb-1">Confirm Password</label>
             <input
               type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              name="confirmPassword"
+              value={formik.values.confirmPassword}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:outline-none"
               placeholder="Re-enter your password"
             />
-            {touched.confirmPassword && confirmPassword && password !== confirmPassword && (
-              <div className="text-xs text-red-600 mt-1">Passwords do not match</div>
+            {formik.touched.confirmPassword && formik.errors.confirmPassword && (
+              <div className="text-xs text-red-600 mt-1">{formik.errors.confirmPassword}</div>
             )}
           </div>
 
