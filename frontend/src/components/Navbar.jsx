@@ -1,102 +1,150 @@
-// // Navbar.jsx
-// import React from "react";
-// import Link from "next/link";
-// import { FaSearch, FaUserCircle } from "react-icons/fa";
+'use client';
 
-// const Navbar = () => {
-//   return (
-//     <nav className="bg-purple-600 text-white flex items-center justify-between px-6 py-4">
-//       {/* Left: Logo and Visual Studio */}
-//       <div className="flex items-center space-x-4">
-//         <Link href="/" className="flex items-center space-x-4">
-//           <img
-//             src="ExtendEaseLogo.png "
-//             alt=" Logo"
-//             className="h-6 w- auto" />
-//           <span className="font-semibold text-lg">ExtendEase</span>
-//         </Link>
-//       </div>
-
-//       {/* Center: Links */}
-//       <div className="flex items-center space-x-6">
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">Developer Tools</a>
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">Downloads</a>
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">Buy</a>
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">About</a>
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">Help</a>
-//         <button className="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded transition-colors duration-200">
-//           Free Visual Studio
-//         </button>
-//       </div>
-
-//       {/* Right: Search, Sign in, and User */}
-//       <div className="flex items-center space-x-4">
-//         <a href="#" className="hover:text-gray-300 transition-colors duration-200">All Microsoft</a>
-//         <FaSearch className="cursor-pointer hover:text-gray-300 transition-colors duration-200" />
-//         <Link href="/login" className="hover:text-gray-300 transition-colors duration-200">
-//           Sign in
-//         </Link>
-//         <Link href="/signup" className="hover:text-gray-300 transition-colors duration-200">
-//           <FaUserCircle className="text-2xl hover:text-gray-300 transition-colors duration-200" />
-//         </Link>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Navbar;
-// Navbar.jsx
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
-import { FaSearch, FaUserCircle } from "react-icons/fa";
+import { FaSearch, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // Implement search functionality here
+    console.log('Searching for:', searchQuery);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const navLinks = [
+    { href: "#", label: "Developer Tools" },
+    { href: "#", label: "Downloads" },
+    { href: "#", label: "Buy" },
+    { href: "/about-us", label: "About" },
+    { href: "#", label: "Help" },
+  ];
+
   return (
-    <nav className="bg-purple-600 text-white flex items-center justify-between px-6 py-4">
-      {/* Left: Logo */}
-      <div className="flex items-center space-x-4">
-        <Link href="/" className="flex items-center space-x-2">
-          <img
-            src="./ExtendEase logo.png"
-            alt="Logo"
-            className="h-25 w-auto"
-          />
-          {/* <span className="font-semibold text-lg">ExtendEase</span> */}
-        </Link>
-      </div>
+    <div className="bg-[#8661C1]">
+  
 
-      {/* Center: Links */}
-      <div className="hidden md:flex items-center space-x-6">
-        <a href="#" className="hover:text-gray-300">Developer Tools</a>
-        <a href="#" className="hover:text-gray-300">Downloads</a>
-        <a href="#" className="hover:text-gray-300">Buy</a>
-        <a href="#" className="hover:text-gray-300">About</a>
-        <a href="#" className="hover:text-gray-300">Help</a>
-        <button className="bg-gray-800 hover:bg-gray-700 text-white px-3 py-1 rounded">
-          Free Visual Studio
-        </button>
-      </div>
+    <nav className=" text-white shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          {/* Left: Logo */}
+          <div className="flex items-center space-x-4">
+            <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+              <img
+                src="white logo.png"
+                alt="ExtendEase Logo"
+                className="h-8 w-auto"
+              />
+              <div className="hidden sm:flex flex-col font-semibold text-lg leading-tight">
+                <span>Extend</span>
+                <span>Ease</span>
+              </div>
+            </Link>
+          </div>
 
-      {/* Right: Search + Auth */}
-      <div className="flex items-center space-x-4">
-        {/* <a href="#" className="hover:text-gray-300">All Microsoft</a> */}
+          {/* Center: Desktop Navigation Links */}
+          <div className="hidden md:flex items-center space-x-6">
+            {navLinks.map((link) => (
+              <Link
+              key={link.label}
+                href={link.href}
+                className="hover:text-gray-300 transition-colors duration-200 text-sm font-medium"
+              >
+                {link.label}
+              </Link>
+            ))}
+            
+          </div>
 
-        {/* 🔍 Search Bar */}
-        <div className="hidden md:flex items-center bg-white rounded-full px-3 py-1">
-          <FaSearch className="text-gray-500" />
-          <input
-            type="text"
-            placeholder="Search..."
-            className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500"
-          />
+          {/* Right: Search + Auth */}
+          <div className="flex items-center space-x-4">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="hidden md:flex items-center bg-white rounded-full px-3 py-2">
+              <FaSearch className="text-gray-500 text-sm" />
+              <input
+                type="text"
+                placeholder="Search..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 w-32 lg:w-48"
+                aria-label="Search"
+                />
+            </form>
+
+            {/* Auth Links */}
+            <Link 
+              href="/login" 
+              className="hover:text-gray-300 transition-colors duration-200 text-sm font-medium"
+              >
+              Sign in
+            </Link>
+            <Link 
+              href="/signup" 
+              className="hover:text-gray-300 transition-colors duration-200"
+              aria-label="Sign up"
+              >
+              <FaUserCircle className="text-2xl" />
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={toggleMobileMenu}
+              className="md:hidden p-2 rounded-md hover:bg-purple-700 transition-colors duration-200"
+              aria-label="Toggle mobile menu"
+            >
+              {isMobileMenuOpen ? (
+                <FaTimes className="h-6 w-6" />
+              ) : (
+                <FaBars className="h-6 w-6" />
+              )}
+            </button>
+          </div>
         </div>
 
-        <Link href="/login" className="hover:text-gray-300">Sign in</Link>
-        <Link href="/signup" className="hover:text-gray-300">
-          <FaUserCircle className="text-2xl" />
-        </Link>
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-purple-700 rounded-lg mt-2">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-purple-600 transition-colors duration-200"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <button className="w-full text-left px-3 py-2 rounded-md text-base font-medium bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
+                Free Visual Studio
+              </button>
+              
+              {/* Mobile Search */}
+              <form onSubmit={handleSearch} className="px-3 py-2">
+                <div className="flex items-center bg-white rounded-full px-3 py-2">
+                  <FaSearch className="text-gray-500 text-sm" />
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 flex-1"
+                    aria-label="Search"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </nav>
+        </div>
   );
 };
 
