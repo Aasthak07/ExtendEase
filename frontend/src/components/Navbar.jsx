@@ -19,15 +19,15 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { href: "#", label: "Developer Tools" },
-    { href: "#", label: "Downloads" },
-    { href: "#", label: "Buy" },
+    { href: "#", label: "All Extensions" },
+    { href: "#", label: "Featured" },
+    { href: "#", label: "PlayGround" },
     { href: "/about-us", label: "About" },
     { href: "#", label: "Help" },
   ];
 
   return (
-    <div className="bg-[#5f3a9b]">
+    <div className="bg-black">
       <nav className="text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
