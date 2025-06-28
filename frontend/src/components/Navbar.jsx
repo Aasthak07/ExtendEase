@@ -27,15 +27,15 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="bg-[#8661C1]">
+    <div className="bg-[#5f3a9b]">
       <nav className="text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Left: Logo - make it most leftmost */}
-            <div className="flex items-center space-x-4 flex-shrink-0 mr-auto">
+            <div className="flex items-center space-x-4 flex-shrink-0">
               <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <img
-                  src="/whiteLogo.png"
+                  src="/Math Symbols Logo.png"
                   alt=" Logo"
                   className="h-15 w-auto"
                 />
@@ -71,21 +71,21 @@ const Navbar = () => {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 w-32 lg:w-48"
                   aria-label="Search"
-                  />
+                />
               </form>
 
               {/* Auth Links */}
-              <Link 
-                href="/login" 
+              <Link
+                href="/login"
                 className="hover:text-gray-300 transition-colors duration-200 text-sm font-medium"
-                >
+              >
                 Sign in
               </Link>
-              <Link 
-                href="/signup" 
+              <Link
+                href="/signup"
                 className="hover:text-gray-300 transition-colors duration-200"
                 aria-label="Sign up"
-                >
+              >
                 <FaUserCircle className="text-2xl" />
               </Link>
 
@@ -121,7 +121,7 @@ const Navbar = () => {
                 <button className="w-full text-left px-3 py-2 rounded-md text-base font-medium bg-gray-800 hover:bg-gray-700 transition-colors duration-200">
                   Free Visual Studio
                 </button>
-                
+
                 {/* Mobile Search */}
                 <form onSubmit={handleSearch} className="px-3 py-2">
                   <div className="flex items-center bg-white rounded-full px-3 py-2">
