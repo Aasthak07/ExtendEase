@@ -29,8 +29,8 @@ export default function AdminLoginPage() {
     setError('');
 
     try {
-      // Using Axios instead of fetch
-      const response = await axios.post('/api/admin/login', {
+      // Use the full backend URL
+      const response = await axios.post('http://localhost:5000/admin/login', {
         email: values.email,
         password: values.password,
         rememberMe: values.rememberMe

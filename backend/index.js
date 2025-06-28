@@ -1,6 +1,8 @@
 const express = require('express');
 const UserRouter = require('./routers/userRouter'); //importing user router
+const adminRouter = require('./routers/admin'); // or './routes/admin' if that's your folder name
 const cors = require('cors');
+require('./connection'); // Import database connection
 
 //creating new express app
 
@@ -17,6 +19,7 @@ app.use(cors({
 app.use(express.json()); //to parse json data from request body
 
 app.use('/user', UserRouter);
+app.use('/admin', adminRouter);
 
 //routes or endpoints
 app.get('/', (req, res) => {
@@ -24,7 +27,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/add', (req, res) => {
-    res.send('Response From Add Route')
+    res.send('Response From Add All Route')
 })
 
 app.get('/getall', (req, res) => {
