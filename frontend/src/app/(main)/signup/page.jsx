@@ -56,7 +56,7 @@ export default function SignupPage() {
   });
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+    <div className="relative h- flex items-center justify-center my-8 mx-8">
       {/* Background */}
       <div
         className="absolute inset-0 z-0 bg-cover bg-center animate-pulse"

@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
             {children}
           </main>
           {/* Footer */}
-          <footer className="bg-white border-t mt-12">
+          {/* <footer className="bg-white border-t mt-12">
             <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center">
               <div className="flex items-center gap-2">
                 <img src="/Final logo.ico" alt="ExtendEase Logo" className="h-28 w-28" />
@@ -28,7 +28,7 @@ export default function RootLayout({ children }) {
                 &copy; {new Date().getFullYear()} ExtendEase. All rights reserved.
               </div>
             </div>
-          </footer>
+          </footer> */}
         </ClientLayout>
       </body>
     </html>
