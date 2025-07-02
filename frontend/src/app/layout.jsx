@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
         <Toaster position='top-right' />
         <ClientLayout>
           {/* Main Content */}
-          <main className="flex-1">
+          <main className="flex-1 p-4">
             {children}
           </main>
           {/* Footer */}
