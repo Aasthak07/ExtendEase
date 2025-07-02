@@ -192,7 +192,7 @@ const Browse = () => {
           {filteredExtensions.map((ext) => (
             <Card
               key={ext._id}
-              className="group hover:shadow-lg transition-all duration-200 overflow-hidden border-0 shadow-md hover:shadow-xl"
+              className="group transition-all duration-200 overflow-hidden border-0 shadow-md hover:shadow-xl"
             >
               <CardHeader className="pb-4">
                 <div className="flex items-start gap-4">
