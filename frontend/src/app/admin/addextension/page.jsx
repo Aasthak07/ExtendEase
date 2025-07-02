@@ -1,39 +1,30 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle, FaEye, FaPlus } from 'react-icons/fa';
 
-const initialExtensions = [
-  {
-    id: 1,
-    name: 'Awesome Formatter',
-    logo: '/file.svg',
-    description: 'Format your code with a single click.',
-    features: ['One-click formatting', 'Supports multiple languages', 'Customizable rules'],
-    published: true,
-    version: '1.2.0',
-    stats: { downloads: 1200, rating: 4.8 },
-  },
-  {
-    id: 2,
-    name: 'Live Preview',
-    logo: '/file.svg',
-    description: 'See your changes live as you code.',
-    features: ['Instant preview', 'Supports HTML/CSS/JS', 'No config needed'],
-    published: false,
-    version: '0.9.5',
-    stats: { downloads: 800, rating: 4.5 },
-  },
-];
-
 export default function AdminManageExtensions() {
-  const [extensions, setExtensions] = useState(initialExtensions);
+  const [extensions, setExtensions] = useState([]);
   const [search, setSearch] = useState('');
-  const [form, setForm] = useState({ name: '', logo: '', description: '', features: '', version: '' });
+  const [form, setForm] = useState({ name: '', logo: '', description: '', features: '', version: '', developer: '' });
   const [editingId, setEditingId] = useState(null);
   const [showDetails, setShowDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
+
+  // Fetch extensions from backend
+  useEffect(() => {
+    const fetchExtensions = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/extensions');
+        const data = await res.json();
+        setExtensions(data);
+      } catch (err) {
+        alert('Failed to fetch extensions: ' + err.message);
+      }
+    };
+    fetchExtensions();
+  }, []);
 
   // Handle image upload
   const handleImageChange = (e) => {
@@ -49,56 +40,91 @@ export default function AdminManageExtensions() {
   };
 
   // Add or update extension
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (editingId) {
-      setExtensions(extensions.map(ext => ext.id === editingId ? {
-        ...ext,
-        ...form,
-        features: form.features.split(',').map(f => f.trim()),
-      } : ext));
-      setEditingId(null);
-    } else {
-      setExtensions([
-        ...extensions,
-        {
-          id: Date.now(),
+      // Update extension via backend
+      try {
+        const res = await fetch(`http://localhost:5000/extensions/${editingId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...form,
+            features: form.features.split(',').map(f => f.trim()),
+          }),
+        });
+        if (!res.ok) throw new Error('Failed to update extension');
+        const updated = await res.json();
+        setExtensions(extensions.map(ext => ext._id === editingId ? updated : ext));
+        setEditingId(null);
+        setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' });
+        setImagePreview('');
+        setShowForm(false);
+        return;
+      } catch (err) {
+        alert('Error updating extension: ' + err.message);
+        return;
+      }
+    }
+    // Add new extension via backend
+    try {
+      const res = await fetch('http://localhost:5000/extensions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           ...form,
           features: form.features.split(',').map(f => f.trim()),
-          published: false,
-          stats: { downloads: 0, rating: 0 },
-        },
-      ]);
+        }),
+      });
+      if (!res.ok) throw new Error('Failed to save extension');
+      const saved = await res.json();
+      setExtensions([...extensions, saved]);
+      setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' });
+      setImagePreview('');
+      setShowForm(false);
+    } catch (err) {
+      alert('Error saving extension: ' + err.message);
     }
-    setForm({ name: '', logo: '', description: '', features: '', version: '' });
-    setImagePreview('');
-    setShowForm(false);
   };
 
   // Edit extension
   const handleEdit = (ext) => {
-    setEditingId(ext.id);
+    setEditingId(ext._id);
     setForm({
       name: ext.name,
       logo: ext.logo,
       description: ext.description,
       features: ext.features.join(', '),
       version: ext.version || '',
+      developer: ext.developer || '',
     });
     setImagePreview(ext.logo || '');
     setShowForm(true);
   };
 
   // Delete extension
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this extension?')) {
-      setExtensions(extensions.filter(ext => ext.id !== id));
+      try {
+        const res = await fetch(`http://localhost:5000/extensions/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete extension');
+        setExtensions(extensions.filter(ext => ext._id !== id));
+      } catch (err) {
+        alert('Error deleting extension: ' + err.message);
+      }
     }
   };
 
   // Toggle publish
-  const handleTogglePublish = (id) => {
-    setExtensions(extensions.map(ext => ext.id === id ? { ...ext, published: !ext.published } : ext));
+  const handleTogglePublish = async (id) => {
+    try {
+      const res = await fetch(`http://localhost:5000/extensions/${id}/publish`, { method: 'PATCH' });
+      if (!res.ok) throw new Error('Failed to toggle publish');
+      const updated = await res.json();
+      setExtensions(extensions.map(ext => ext._id === id ? updated : ext));
+    } catch (err) {
+      alert('Error toggling publish: ' + err.message);
+    }
   };
 
   // Filtered extensions
@@ -112,7 +138,7 @@ export default function AdminManageExtensions() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Extension Management</h1>
         <button
-          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '' }); setImagePreview(''); }}
+          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }}
           className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition font-semibold"
         >
           <FaPlus /> Add Extension
@@ -132,7 +158,7 @@ export default function AdminManageExtensions() {
       {/* Extension Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map(ext => (
-          <div key={ext.id} className="bg-white rounded-xl shadow-lg p-6 flex flex-col relative group border border-gray-100 hover:shadow-2xl transition">
+          <div key={ext._id} className="bg-white rounded-xl shadow-lg p-6 flex flex-col relative group border border-gray-100 hover:shadow-2xl transition">
             <div className="flex items-center gap-4 mb-3">
               <img src={ext.logo || '/file.svg'} alt="logo" className="w-14 h-14 rounded border bg-gray-50 object-cover" />
               <div>
@@ -145,6 +171,7 @@ export default function AdminManageExtensions() {
                   )}
                 </h2>
                 <div className="text-sm text-gray-500">v{ext.version}</div>
+                <div className="text-xs text-gray-400">By {ext.developer}</div>
               </div>
             </div>
             <p className="text-gray-700 mb-2 line-clamp-2 min-h-[40px]">{ext.description}</p>
@@ -162,8 +189,8 @@ export default function AdminManageExtensions() {
               <div className="flex gap-2">
                 <button onClick={() => setShowDetails(ext)} className="p-2 rounded hover:bg-blue-50 text-blue-600" title="View Details"><FaEye /></button>
                 <button onClick={() => handleEdit(ext)} className="p-2 rounded hover:bg-yellow-100 text-yellow-600" title="Edit"><FaEdit /></button>
-                <button onClick={() => handleDelete(ext.id)} className="p-2 rounded hover:bg-red-100 text-red-600" title="Delete"><FaTrash /></button>
-                <button onClick={() => handleTogglePublish(ext.id)} className={`p-2 rounded ${ext.published ? 'hover:bg-green-100 text-green-600' : 'hover:bg-gray-200 text-gray-500'}`} title={ext.published ? 'Unpublish' : 'Publish'}>
+                <button onClick={() => handleDelete(ext._id)} className="p-2 rounded hover:bg-red-100 text-red-600" title="Delete"><FaTrash /></button>
+                <button onClick={() => handleTogglePublish(ext._id)} className={`p-2 rounded ${ext.published ? 'hover:bg-green-100 text-green-600' : 'hover:bg-gray-200 text-gray-500'}`} title={ext.published ? 'Unpublish' : 'Publish'}>
                   {ext.published ? <FaTimesCircle /> : <FaCheckCircle />}
                 </button>
               </div>
@@ -179,12 +206,17 @@ export default function AdminManageExtensions() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-lg relative animate-fadeIn">
-            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '' }); setImagePreview(''); }} className="absolute top-3 right-3 text-2xl text-gray-400 hover:text-gray-700">&times;</button>
+            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }} className="absolute top-3 right-3 text-2xl text-gray-400 hover:text-gray-700">&times;</button>
             <h2 className="text-2xl font-bold mb-4">{editingId ? 'Edit Extension' : 'Add New Extension'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
+              
                 <label className="block text-sm font-medium mb-1">Extension Name</label>
                 <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Developer</label>
+                <input required value={form.developer} onChange={e => setForm({ ...form, developer: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Logo Image</label>
@@ -206,7 +238,7 @@ export default function AdminManageExtensions() {
                 <textarea required value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200 min-h-[80px]" />
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '' }); setImagePreview(''); }} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 font-semibold">Cancel</button>
+                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 font-semibold">Cancel</button>
                 <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold shadow">{editingId ? 'Update' : 'Add'} Extension</button>
               </div>
             </form>
@@ -224,6 +256,7 @@ export default function AdminManageExtensions() {
               <div>
                 <h2 className="text-2xl font-bold">{showDetails.name}</h2>
                 <span className="text-gray-500">v{showDetails.version}</span>
+                <div className="text-xs text-gray-400">By {showDetails.developer}</div>
               </div>
             </div>
             <p className="mb-2 text-gray-700">{showDetails.description}</p>
