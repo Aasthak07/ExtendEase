@@ -67,13 +67,13 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-indigo-100 p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="mx-auto w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mb-4">
             <svg 
-              className="w-8 h-8 text-purple-600" 
+              className="w-8 h-8 text-indigo-600" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
             </svg>
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin Login</h1>
-          <p className="text-gray-600">Sign in to access the admin panel</p>
+          <p className="text-indigo-600">Sign in to access the admin panel</p>
         </div>
 
         {/* Error Message */}
@@ -134,7 +134,7 @@ export default function AdminLoginPage() {
                     id="email"
                     name="email"
                     type="email"
-                    className={`w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
+                    className={`w-full pl-10 pr-3 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-colors ${
                       errors.email && touched.email 
                         ? 'border-red-300 focus:ring-red-500' 
                         : 'border-gray-300'
@@ -175,7 +175,7 @@ export default function AdminLoginPage() {
                     id="password"
                     name="password"
                     type={showPassword ? 'text' : 'password'}
-                    className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-colors ${
+                    className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-600 focus:border-transparent transition-colors ${
                       errors.password && touched.password 
                         ? 'border-red-300 focus:ring-red-500' 
                         : 'border-gray-300'
@@ -240,7 +240,7 @@ export default function AdminLoginPage() {
                     id="rememberMe"
                     name="rememberMe"
                     type="checkbox"
-                    className="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded"
+                    className="h-4 w-4 text-indigo-600 focus:ring-indigo-600 border-gray-300 rounded"
                     disabled={isLoading}
                   />
                   <label htmlFor="rememberMe" className="ml-2 block text-sm text-gray-700">
@@ -249,7 +249,7 @@ export default function AdminLoginPage() {
                 </div>
                 <Link
                   href="/admin/forgot-password"
-                  className="text-sm text-purple-600 hover:text-purple-500 transition-colors"
+                  className="text-sm text-indigo-600 hover:text-indigo-400 transition-colors"
                 >
                   Forgot password?
                 </Link>
@@ -259,7 +259,7 @@ export default function AdminLoginPage() {
               <button
                 type="submit"
                 disabled={isLoading || isSubmitting}
-                className="w-full bg-purple-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-purple-700 focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-indigo-700 text-white py-3 px-4 rounded-lg font-medium hover:bg-indigo-400 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center">
@@ -278,7 +278,7 @@ export default function AdminLoginPage() {
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-600">
             Need help?{' '}
-            <Link href="/admin/support" className="text-purple-600 hover:text-purple-500">
+            <Link href="/admin/support" className="text-indigo-600 hover:text-indigo-400">
               Contact support
             </Link>
           </p>

@@ -73,11 +73,11 @@ export default function SignupPage() {
       <div className="relative z-10 w-full max-w-xl p-8 sm:p-10 bg-white rounded-2xl shadow-xl">
         {/* Logo (top-left inside box) */}
         <div className="mb-6 flex items-center">
-          <img src="/ExtendEase logo.png" alt="Logo" className="h-24 w-26 mr-3" />
+          <img src="/Final Logo.ico" alt="Logo" className="h-24 w-26 mr-3" />
         </div>
 
         <h1 className="text-2xl font-bold text-gray-800 mb-2">Account Sign-Up</h1>
-        <p className="text-sm text-gray-500 mb-6">Create an online account with just a few clicks.</p>
+        <p className="text-sm text-indigo-500 mb-6">Create an online account with just a few clicks.</p>
 
         {error && (
           <div className="mb-4 p-2 bg-red-100 text-red-700 border border-red-300 rounded text-sm text-center">
@@ -175,7 +175,7 @@ export default function SignupPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white font-semibold py-2 rounded-md transition"
+            className="w-full bg-indigo-700 hover:bg-indigo-400 text-white font-semibold py-2 rounded-md transition"
           >
             {isLoading ? 'Creating account...' : 'Sign up'}
           </button>
@@ -183,7 +183,7 @@ export default function SignupPage() {
 
         <p className="mt-6 text-sm text-center text-gray-600">
           Already have an account?{' '}
-          <Link href="/login" className="text-purple-700 hover:underline font-medium">
+          <Link href="/login" className="text-indigo-700 hover:underline font-medium">
             Login
           </Link>
         </p>

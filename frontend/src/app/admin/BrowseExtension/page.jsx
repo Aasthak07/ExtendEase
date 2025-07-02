@@ -243,7 +243,7 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
             <h2 className="text-2xl font-semibold mb-4">⚡ Quick Actions</h2>
             <div className="flex flex-wrap gap-4">
               <button 
-                className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                className="bg-indigo-500 hover:bg-indigo-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 onClick={() => alert('Generate manifest.json file')}
               >
                 📄 Generate Manifest
@@ -255,7 +255,7 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
                 🧪 Test Extension
               </button>
               <button 
-                className="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+                className="bg-indigo-500 hover:bg-indigo-400 text-white px-6 py-3 rounded-lg font-medium transition-colors"
                 onClick={() => alert('Package extension')}
               >
                 📦 Package Extension

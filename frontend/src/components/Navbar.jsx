@@ -92,7 +92,7 @@ const Navbar = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="md:hidden p-2 rounded-md hover:bg-purple-700 transition-colors duration-200"
+                className="md:hidden p-2 rounded-md hover:bg-indigo-400 transition-colors duration-200"
                 aria-label="Toggle mobile menu"
               >
                 {isMobileMenuOpen ? (
@@ -112,7 +112,7 @@ const Navbar = () => {
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-purple-600 transition-colors duration-200"
+                    className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-indigo-400 transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}

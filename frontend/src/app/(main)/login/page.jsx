@@ -49,13 +49,13 @@ export default function LoginPage() {
         {/* Logo Top Left */}
         <div className="absolute top-3 left-3 sm:top-4 sm:left-6">
           <Link href="/" className="flex items-center gap-2">
-            <img src="/ExtendEase logo.png" alt="Logo" className="h-30 w-auto" />
+            <img src="/Final logo.ico" alt="Logo" className="h-30 w-auto" />
             <span className="text-xl font-semibold text-gray-900"></span>
           </Link>
         </div>
 
         <div className="mt-20">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome back</h1>
+          <h1 className="text-3xl font-bold text-indigo-700">Welcome back</h1>
           <p className="text-sm text-gray-600 mt-2">Please enter your details to sign in</p>
         </div>
 
@@ -74,7 +74,7 @@ export default function LoginPage() {
               value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 transition"
               placeholder="Enter your email"
             />
             {formik.touched.username && formik.errors.username && (
@@ -90,7 +90,7 @@ export default function LoginPage() {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:border-indigo-700 transition"
               placeholder="Enter your password"
             />
             {formik.touched.password && formik.errors.password && (
@@ -100,10 +100,10 @@ export default function LoginPage() {
 
           <div className="flex justify-between text-sm text-gray-600 items-center">
             <label className="flex items-center gap-2">
-              <input type="checkbox" className="accent-purple-600" />
+              <input type="checkbox" className="accent-indigo-700" />
               Remember for 30 days
             </label>
-            <Link href="#" className="text-purple-700 hover:underline">
+            <Link href="#" className="text-indigo-700 hover:underline">
               Forgot password?
             </Link>
           </div>
@@ -111,7 +111,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-purple-700 hover:bg-purple-800 text-white py-2 rounded-lg font-semibold transition-all duration-200"
+            className="w-full bg-indigo-700 hover:opacity-90 text-white py-2 rounded-lg font-semibold transition-all duration-200"
           >
             {isLoading ? 'Signing in...' : 'Sign in'}
           </button>
@@ -127,16 +127,16 @@ export default function LoginPage() {
 
         <p className="mt-6 text-sm text-center text-gray-600">
           Don't have an account?{' '}
-          <Link href="/signup" className="text-purple-700 hover:underline font-medium">
+          <Link href="/signup" className="text-indigo-700 hover:underline font-medium">
             Sign up
           </Link>
         </p>
       </div>
 
       {/* Right Panel */}
-      <div className="hidden md:block bg-purple-100 h-screen">
+      <div className="hidden md:flex bg-gray-100 h-screen items-center justify-center">
         <img
-          src="/login-page.svg"
+          src="/indigo login.png"
           alt="Login illustration"
           className="w-full h-full object-cover"
         />

@@ -8,12 +8,17 @@ const AboutUs = () => {
       <section className="relative py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
-              🧩 About <span className="text-purple-600">ExtendEase</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 flex items-center justify-center gap-3 leading-none">
+              <img
+                src="/sq.ico"
+                alt="Logo"
+                className="inline-block h-[1.0em] w-[1.0em] align-middle"
+              />
+              <span className="-ml-0.1">About <span className="text-indigo-600">ExtendEase</span></span>
             </h1>
             <p className="text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
               Welcome to <strong>ExtendEase</strong> – The VS Code Extensions Marketplace, a dedicated platform built 
-              <strong className="text-purple-600"> by developers, for developers</strong>. Our mission is simple: to empower 
+              <strong className="text-indigo-600"> by developers, for developers</strong>. Our mission is simple: to empower 
               the global coding community with a centralized, community-driven space to discover, share, and manage 
               Visual Studio Code extensions with ease.
             </p>
@@ -35,25 +40,25 @@ const AboutUs = () => {
                 the official marketplace remains limited.
               </p>
               <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-                <strong className="text-purple-600">ExtendEase</strong> is here to change that—by providing a seamless, 
+                <strong className="text-indigo-600">ExtendEase</strong> is here to change that—by providing a seamless, 
                 user-friendly environment where:
               </p>
               <ul className="space-y-3 text-gray-700">
                 <li className="flex items-start">
-                  <span className="text-purple-600 mr-3 mt-1">•</span>
+                  <span className="text-indigo-600 mr-3 mt-1">•</span>
                   Developers can <em>explore powerful extensions</em>, optimized for productivity and innovation.
                 </li>
                 <li className="flex items-start">
-                  <span className="text-purple-600 mr-3 mt-1">•</span>
+                  <span className="text-indigo-600 mr-3 mt-1">•</span>
                   Publishers can <em>showcase their creations</em>, engage with users, and gain meaningful insights.
                 </li>
                 <li className="flex items-start">
-                  <span className="text-purple-600 mr-3 mt-1">•</span>
+                  <span className="text-indigo-600 mr-3 mt-1">•</span>
                   Admins ensure the platform maintains <em>quality, safety, and inclusivity</em>.
                 </li>
               </ul>
             </div>
-            <div className="bg-gradient-to-br from-purple-100 to-blue-100 rounded-2xl p-8">
+            <div className="bg-gradient-to-br from-indigo-100 to-blue-100 rounded-2xl p-8">
               <div className="text-center">
                 <div className="text-6xl mb-4">💻</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Built for Developers</h3>
@@ -73,12 +78,19 @@ const AboutUs = () => {
             <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
               🔧 What We Offer
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              ExtendEase is built using the robust <strong className="text-purple-600">MERN Stack</strong> 
-              (MongoDB, Express.js, React.js, and Node.js), delivering a scalable, secure, and high-performance experience.
-            </p>
+            <div className="relative max-w-3xl mx-auto mb-10">
+              <div className="flex justify-center mb-4">
+                <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-indigo-100 shadow-md">
+                  <svg className="w-8 h-8 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+              </div>
+              <p className="text-xl text-gray-800 bg-white/80 border border-indigo-100 rounded-2xl shadow-lg px-8 py-6 leading-relaxed font-medium">
+                <span className="text-indigo-700 font-semibold">ExtendEase</span> is your go-to platform for discovering and managing top Visual Studio Code extensions. Whether you're a <span className="font-semibold text-indigo-600">beginner</span> or a <span className="font-semibold text-indigo-600">pro</span>, we help you find the right tools by organizing extensions into domains like <span className="font-semibold text-indigo-600">Web Development</span>, <span className="font-semibold text-indigo-600">AI/ML</span>, and <span className="font-semibold text-indigo-600">UI/UX</span>. With real use cases, smart filters, and clear descriptions, ExtendEase lets you spend less time searching and more time building.
+              </p>
+            </div>
           </div>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Feature Cards */}
             <div className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow">
@@ -136,7 +148,7 @@ const AboutUs = () => {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="bg-gradient-to-br from-blue-100 to-purple-100 rounded-2xl p-8">
+            <div className="bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-8">
               <div className="text-center">
                 <div className="text-6xl mb-4">🤝</div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-4">Join Our Community</h3>
@@ -177,7 +189,7 @@ const AboutUs = () => {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="bg-indigo-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl">🎯</span>
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Personalized Recommendations</h3>
@@ -211,7 +223,7 @@ const AboutUs = () => {
 
           <div className="text-center mt-12">
             <p className="text-lg text-gray-700">
-              We're just getting started—and we're excited to build the future of extension sharing with <strong className="text-purple-600">you</strong>.
+              We're just getting started—and we're excited to build the future of extension sharing with <strong className="text-indigo-600">you</strong>.
             </p>
           </div>
         </div>
@@ -229,20 +241,20 @@ const AboutUs = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/contact" 
-              className="inline-flex items-center justify-center px-8 py-3 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-colors"
             >
               Contact Us
             </Link>
             <a 
               href="mailto:support@extendease.dev" 
-              className="inline-flex items-center justify-center px-8 py-3 border-2 border-purple-600 text-purple-600 font-semibold rounded-lg hover:bg-purple-600 hover:text-white transition-colors"
+              className="inline-flex items-center justify-center px-8 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-600 hover:text-white transition-colors"
             >
               Email Support
             </a>
           </div>
           <p className="text-gray-600 mt-6">
-            Reach out via our <Link href="/contact" className="text-purple-600 hover:underline">Contact page</Link> or email us at{' '}
-            <a href="mailto:support@extendease.dev" className="text-purple-600 hover:underline font-semibold">
+            Reach out via our <Link href="/contact" className="text-indigo-600 hover:underline">Contact page</Link> or email us at{' '}
+            <a href="mailto:support@extendease.dev" className="text-indigo-600 hover:underline font-semibold">
               support@extendease.dev
             </a>
           </p>
