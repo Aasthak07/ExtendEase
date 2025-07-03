@@ -156,7 +156,7 @@ export default function AdminDashboard() {
               </Link>
 
               <Link
-                href="/admin/addextension"
+                href="/admin/manage-extensions"
                 className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
               >
                 <div className="p-2 bg-green-100 rounded-lg mr-4">

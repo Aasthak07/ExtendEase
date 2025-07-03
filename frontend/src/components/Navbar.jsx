@@ -24,6 +24,7 @@ const Navbar = () => {
     { href: "#", label: "PlayGround" },
     { href: "/about-us", label: "About" },
     { href: "#", label: "Help" },
+    { href: "/admin/manage-extensions", label: "Admin: Manage Extensions" },
   ];
 
   return (
