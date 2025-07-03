@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Download, Star, Search, Package, User, CheckCircle, XCircle, Filter, Grid3X3, List } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import Link from "next/link";
 
 const Browse = () => {
   const [extensions, setExtensions] = useState([]);
@@ -63,85 +64,108 @@ const Browse = () => {
     return num.toString();
   };
 
-  const renderCard = (ext) => (
-    <Card key={ext._id} className="group transition-all duration-200 overflow-hidden border-0 shadow-md hover:shadow-xl">
-      <CardHeader className="pb-4">
-        <div className="flex items-start gap-4">
-          <Avatar className="h-12 w-12 rounded-lg">
-            <AvatarImage src={ext.logo || "/placeholder.svg"} alt={`${ext.name} logo`} />
-            <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
-              {ext.name.charAt(0).toUpperCase()}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-start justify-between gap-2">
-              <CardTitle className="text-lg leading-tight group-hover:text-blue-600 transition-colors">
-                {ext.name}
-              </CardTitle>
-              {ext.published ? (
-                <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
-              )}
-            </div>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
-              <User className="h-3 w-3" />
-              {ext.developer}
-            </div>
-          </div>
-        </div>
-      </CardHeader>
-      <CardContent className="pt-0">
-        <CardDescription className="text-sm mb-4 line-clamp-2">{ext.description}</CardDescription>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge variant="secondary" className="text-xs">
-            v{ext.version}
-          </Badge>
-          <Badge variant={ext.published ? "default" : "destructive"} className="text-xs">
-            {ext.published ? "Published" : "Unpublished"}
-          </Badge>
-        </div>
-
-        {ext.features && ext.features.length > 0 && (
-          <div className="mb-4">
-            <h4 className="text-sm font-medium mb-2">Features:</h4>
-            <div className="flex flex-wrap gap-1">
-              {ext.features.slice(0, 3).map((feature, idx) => (
-                <Badge key={idx} variant="outline" className="text-xs">
-                  {feature}
-                </Badge>
-              ))}
-              {ext.features.length > 3 && (
-                <Badge variant="outline" className="text-xs">
-                  +{ext.features.length - 3} more
-                </Badge>
-              )}
+  const renderCard = (ext) => {
+    // The outermost clickable area is the Card, not the Link
+    const cardContent = (
+      <Card className="group transition-all duration-200 overflow-hidden border-0 shadow-md hover:shadow-xl">
+        <CardHeader className="pb-4">
+          <div className="flex items-start gap-4">
+            <Avatar className="h-12 w-12 rounded-lg">
+              <AvatarImage src={ext.logo || "/placeholder.svg"} alt={`${ext.name} logo`} />
+              <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+                {ext.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-start justify-between gap-2">
+                <CardTitle className="text-lg leading-tight group-hover:text-blue-600 transition-colors">
+                  {ext.name}
+                </CardTitle>
+                {ext.published ? (
+                  <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />
+                ) : (
+                  <XCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
+                )}
+              </div>
+              <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
+                <User className="h-3 w-3" />
+                {ext.developer}
+              </div>
             </div>
           </div>
-        )}
+        </CardHeader>
+        <CardContent className="pt-0">
+          <CardDescription className="text-sm mb-4 line-clamp-2">{ext.description}</CardDescription>
 
-        {ext.stats && (
-          <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
-            <div className="flex items-center gap-1">
-              <Download className="h-4 w-4" />
-              {formatNumber(ext.stats.downloads)}
-            </div>
-            <div className="flex items-center gap-1">
-              <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-              {typeof ext.stats.rating === "number" ? ext.stats.rating.toFixed(1) : "N/A"}
-            </div>
+          <div className="flex flex-wrap gap-2 mb-4">
+            <Badge variant="secondary" className="text-xs">
+              v{ext.version}
+            </Badge>
+            <Badge variant={ext.published ? "default" : "destructive"} className="text-xs">
+              {ext.published ? "Published" : "Unpublished"}
+            </Badge>
           </div>
-        )}
 
-        <Button className="w-full" asChild disabled={!ext.published || !ext.downloadUrl}>
-          <a href={ext.downloadUrl || "#"} target="_blank" rel="noopener noreferrer">
-            <Download className="h-4 w-4 mr-2" /> Install Extension
-          </a>
-        </Button>
-      </CardContent>
-    </Card>
-  );
+          {ext.features && ext.features.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-sm font-medium mb-2">Features:</h4>
+              <div className="flex flex-wrap gap-1">
+                {ext.features.slice(0, 3).map((feature, idx) => (
+                  <Badge key={idx} variant="outline" className="text-xs">
+                    {feature}
+                  </Badge>
+                ))}
+                {ext.features.length > 3 && (
+                  <Badge variant="outline" className="text-xs">
+                    +{ext.features.length - 3} more
+                  </Badge>
+                )}
+              </div>
+            </div>
+          )}
+
+          {ext.stats && (
+            <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+              <div className="flex items-center gap-1">
+                <Download className="h-4 w-4" />
+                {formatNumber(ext.stats.downloads)}
+              </div>
+              <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                {typeof ext.stats.rating === "number" ? ext.stats.rating.toFixed(1) : "N/A"}
+              </div>
+            </div>
+          )}
+
+          {/* Only show install button if published and has downloadUrl */}
+          {ext.published && ext.downloadUrl && (
+            <Button className="w-full" asChild>
+              <a href={ext.downloadUrl} target="_blank" rel="noopener noreferrer">
+                <Download className="h-4 w-4 mr-2" /> Install Extension
+              </a>
+            </Button>
+          )}
+          {/* If not published or no downloadUrl, show a disabled button (not an <a> tag) */}
+          {(!ext.published || !ext.downloadUrl) && (
+            <Button className="w-full" disabled>
+              <Download className="h-4 w-4 mr-2" /> Install Extension
+            </Button>
+          )}
+        </CardContent>
+      </Card>
+    );
+    // Make the whole card clickable, but do not nest <a> inside <a>
+    return (
+      <div key={ext._id} className="block group" style={{ textDecoration: "none", color: "inherit", cursor: "pointer" }}
+        onClick={() => window.location.href = `/view-extensions/${ext._id}`}
+        tabIndex={0}
+        role="link"
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') window.location.href = `/view-extensions/${ext._id}`; }}
+      >
+        {cardContent}
+      </div>
+    );
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -212,9 +236,8 @@ const Browse = () => {
         <div key={category} className="mb-10">
           <h2 className="text-2xl font-semibold mb-4 text-purple-700">{category}</h2>
           <div
-            className={`grid gap-6 ${
-              viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
-            }`}
+            className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
+              }`}
           >
             {extList.map(renderCard)}
           </div>
