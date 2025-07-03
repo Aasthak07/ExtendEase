@@ -210,7 +210,7 @@ export default function AdminManageExtensions() {
             <h2 className="text-2xl font-bold mb-4">{editingId ? 'Edit Extension' : 'Add New Extension'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-              
+
                 <label className="block text-sm font-medium mb-1">Extension Name</label>
                 <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
               </div>
