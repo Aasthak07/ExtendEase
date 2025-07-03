@@ -9,7 +9,7 @@ const ExtensionSchema = new mongoose.Schema({
   features: [{ type: String }],
   version: { type: String, required: true },
   published: { type: Boolean, default: false },
-  downloadUrl: { type: String }, // URL to the extension's download page
+  identifier: { type: String }, // Unique identifier for the extension
   stats: {
     downloads: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
