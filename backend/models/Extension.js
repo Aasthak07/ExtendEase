@@ -5,9 +5,11 @@ const ExtensionSchema = new mongoose.Schema({
   developer: { type: String, required: true },
   logo: { type: String }, // base64 or URL
   description: { type: String, required: true },
+  category: { type: String, required: true },
   features: [{ type: String }],
   version: { type: String, required: true },
   published: { type: Boolean, default: false },
+  downloadUrl: { type: String }, // URL to the extension's download page
   stats: {
     downloads: { type: Number, default: 0 },
     rating: { type: Number, default: 0 },
