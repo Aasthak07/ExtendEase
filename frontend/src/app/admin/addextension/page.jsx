@@ -1,9 +1,12 @@
 'use client'
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { FaPlus } from 'react-icons/fa';
 
 export default function RedirectAddExtension() {
+  const [extensions, setExtensions] = useState([]);
   const router = useRouter();
+  const [search, setSearch] = useState('');
   useEffect(() => {
     const fetchExtensions = async () => {
       try {

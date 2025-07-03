@@ -3,6 +3,7 @@ const UserRouter = require('./routers/userRouter'); //importing user router
 const adminRouter = require('./routers/admin'); // or './routes/admin' if that's your folder name
 const cors = require('cors');
 const extensionRouter = require('./routers/extensionRouter');
+const ratingRouter = require('./routers/ratingRouter');
 require('./connection'); // Import database connection
 
 //creating new express app
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true })); // to parse urle
 app.use('/user', UserRouter);
 app.use('/admin', adminRouter);
 app.use('/extensions', extensionRouter);
+app.use('/ratings', ratingRouter);
 
 //routes or endpoints
 app.get('/', (req, res) => {
