@@ -31,6 +31,7 @@ export default function LoginPage() {
         });
         setIsLoading(false);
         // You can store token or user info here if needed
+        localStorage.setItem('token', response.data.token);
         router.push('/');
       } catch (err) {
         setIsLoading(false);

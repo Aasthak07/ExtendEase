@@ -3,10 +3,30 @@ const router = express.Router();
 const Rating = require('../models/ratingModel');
 const Extension = require('../models/Extension');
 
+const jwt = require('jsonwebtoken');
+
 // Add new review
 router.post('/add', async (req, res) => {
     try {
-        const { extensionId, rating, comment, userId } = req.body;
+        const { extensionId, rating, comment } = req.body;
+        let userId = req.body.userId;
+
+        // If userId is not provided, try to decode from token
+        if (!userId) {
+            const authHeader = req.headers.authorization || req.headers.Authorization;
+            if (authHeader && authHeader.startsWith('Bearer ')) {
+                const token = authHeader.split(' ')[1];
+                try {
+                    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+                    userId = decoded.id || decoded._id;
+                } catch (err) {
+                    return res.status(401).json({ error: 'Invalid token' });
+                }
+            } else {
+                return res.status(401).json({ error: 'No userId or token provided' });
+            }
+        }
+
         const newRating = new Rating({
             extension: extensionId,
             user: userId,

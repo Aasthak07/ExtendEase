@@ -6,10 +6,11 @@ const Extension = require('../models/Extension');
 router.post('/', async (req, res) => {
   console.log('POST /extensions called with body:', req.body);
   try {
-    const { name, developer, logo, description, category, features, version, published, stats } = req.body;
+    const { name, developer, publisher, logo, description, category, features, version, published, stats, identifier } = req.body;
     const extension = new Extension({
       name,
       developer,
+      publisher,
       logo,
       description,
       category,
@@ -17,6 +18,7 @@ router.post('/', async (req, res) => {
       version,
       published,
       stats,
+      identifier,
     });
     await extension.save();
     console.log('Extension saved successfully:', extension);
