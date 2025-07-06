@@ -24,7 +24,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true })); // to parse urle
 app.use('/user', UserRouter);
 app.use('/admin', adminRouter);
 app.use('/extensions', extensionRouter);
-app.use('/ratings', ratingRouter);
+app.use('/rating', ratingRouter);
 
 //routes or endpoints
 app.get('/', (req, res) => {

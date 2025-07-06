@@ -16,7 +16,7 @@ export default function AdminManageExtensions() {
     'DevOps / Docker / YAML',
     'Themes & Icons',
   ]);
-  const [form, setForm] = useState({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] });
+  const [form, setForm] = useState({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] });
   const [editingId, setEditingId] = useState(null);
   const [showDetails, setShowDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
@@ -67,7 +67,7 @@ export default function AdminManageExtensions() {
         const updated = await res.json();
         setExtensions(extensions.map(ext => ext._id === editingId ? updated : ext));
         setEditingId(null);
-        setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] });
+        setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] });
         setImagePreview('');
         setShowForm(false);
         return;
@@ -89,7 +89,7 @@ export default function AdminManageExtensions() {
       if (!res.ok) throw new Error('Failed to save extension');
       const saved = await res.json();
       setExtensions([...extensions, saved]);
-      setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] });
+      setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] });
       setImagePreview('');
       setShowForm(false);
     } catch (err) {
@@ -107,6 +107,7 @@ export default function AdminManageExtensions() {
       features: ext.features.join(', '),
       version: ext.version || '',
       developer: ext.developer || '',
+      publisher: ext.publisher || '',
       identifier: ext.identifier || '',
       category: ext.category || categories[0],
     });
@@ -150,7 +151,7 @@ export default function AdminManageExtensions() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Extension Management</h1>
         <button
-          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] }); setImagePreview(''); }}
+          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] }); setImagePreview(''); }}
           className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition font-semibold"
         >
           <FaPlus /> Add Extension
@@ -230,7 +231,7 @@ export default function AdminManageExtensions() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-2xl relative animate-fadeIn border border-blue-200 max-h-[90vh] overflow-y-auto">
-            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] }); setImagePreview(''); }} className="absolute top-4 right-4 text-2xl text-gray-400 hover:text-gray-700 transition-all">&times;</button>
+            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] }); setImagePreview(''); }} className="absolute top-4 right-4 text-2xl text-gray-400 hover:text-gray-700 transition-all">&times;</button>
             <h2 className="text-2xl font-bold mb-4 text-center text-blue-700">{editingId ? 'Edit Extension' : 'Add New Extension'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -241,6 +242,10 @@ export default function AdminManageExtensions() {
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Developer</label>
                   <input required value={form.developer} onChange={e => setForm({ ...form, developer: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-200" />
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold mb-2 text-gray-700">Publisher</label>
+                  <input required value={form.publisher} onChange={e => setForm({ ...form, publisher: e.target.value })} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-200" />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Logo Image</label>
@@ -288,7 +293,7 @@ export default function AdminManageExtensions() {
                 </div>
               </div>
               <div className="flex justify-end gap-3 mt-6">
-                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', identifier: '', category: categories[0] }); setImagePreview(''); }} className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 font-semibold">Cancel</button>
+                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] }); setImagePreview(''); }} className="px-5 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 font-semibold">Cancel</button>
                 <button type="submit" className="px-7 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold shadow-lg">{editingId ? 'Update' : 'Add'} Extension</button>
               </div>
             </form>

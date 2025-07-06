@@ -1,11 +1,13 @@
+
+
 'use client';
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Rating } from '@mui/material';
-import { ArrowLeft, Download, Star, Clock, User, Package, Tag } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { ArrowLeft, Download, Star, Clock, User, Package, Tag } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const ViewExtension = () => {
     const { id } = useParams();
@@ -13,13 +15,11 @@ const ViewExtension = () => {
     const [extension, setExtension] = useState(null);
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState({ rating: 0, comment: '' });
-
-    // Get user from localStorage
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        const loggedUser = JSON.parse(localStorage.getItem('user'));
-        setUser(loggedUser);
+        const token = localStorage.getItem('token');
+        setUser(token);
         fetchExtensionDetails();
         fetchReviews();
     }, [id]);
@@ -27,29 +27,41 @@ const ViewExtension = () => {
     const fetchExtensionDetails = async () => {
         try {
             const response = await fetch(`http://localhost:5000/extensions/${id}`);
-            const data = await response.json();
-            setExtension(data);
+            const contentType = response.headers.get('content-type');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                console.log("✅ Extension fetched:", data);
+                setExtension(data);
+            } else {
+                throw new Error('Expected JSON response');
+            }
         } catch (error) {
             console.error('Error fetching extension:', error);
+            setExtension(null);
         }
     };
 
     const fetchReviews = async () => {
         try {
             const response = await fetch(`http://localhost:5000/rating/byextension/${id}`);
-            const data = await response.json();
-            setReviews(data);
+            const contentType = response.headers.get('content-type');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            if (contentType && contentType.includes('application/json')) {
+                const data = await response.json();
+                setReviews(data);
+            } else {
+                throw new Error('Expected JSON response');
+            }
         } catch (error) {
             console.error('Error fetching reviews:', error);
+            setReviews([]);
         }
     };
 
     const handleSubmitReview = async (e) => {
         e.preventDefault();
-        if (!user) {
-            alert('Please login to submit a review');
-            return;
-        }
+        if (!user) return alert('Please login to submit a review');
 
         try {
             const response = await fetch('http://localhost:5000/rating/add', {
@@ -72,26 +84,13 @@ const ViewExtension = () => {
     };
 
     const handleInstall = () => {
-        try {
-            // Ensure the extension name and publisher are formatted correctly
-            const extensionName = extension.name.trim().replace(/\s+/g, '').toLowerCase();
-            const extensionPublisher = extension.publisher.trim().replace(/\s+/g, '').toLowerCase();
-
-            // Construct the VS Code protocol URL
-            const vsCodeUrl = `vscode:extension/${extensionPublisher}.${extensionName}`;
-
-            // Log for debugging
-            console.log('Attempting to install extension:', vsCodeUrl);
-
-            // Redirect to the VS Code link
-            window.location.href = vsCodeUrl;
-
-            // Optional: Show a confirmation message to the user
-            alert('If you have VS Code installed, the extension installation will start shortly.');
-        } catch (error) {
-            console.error('Error while installing extension:', error);
-            alert('Unable to install the extension. Please try again later.');
+        if (!extension?.identifier || !extension?.publisher) {
+            console.error('Missing identifier or publisher:', extension);
+            return alert('Extension info missing');
         }
+        const vsCodeUrl = `vscode:extension/${extension.publisher.trim()}.${extension.identifier.trim()}`;
+        console.log('Redirecting to VS Code:', vsCodeUrl);
+        window.location.href = vsCodeUrl;
     };
 
     if (!extension) return (
@@ -103,16 +102,11 @@ const ViewExtension = () => {
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
             <div className="mx-auto max-w-6xl px-4 py-8">
-                <Button
-                    variant="ghost"
-                    className="mb-6 hover:bg-gray-100"
-                    onClick={() => router.back()}
-                >
+                <Button variant="ghost" className="mb-6 hover:bg-gray-100" onClick={() => router.back()}>
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back to Extensions
                 </Button>
 
                 <div className="grid gap-8 md:grid-cols-3">
-                    {/* Main Content */}
                     <div className="md:col-span-2">
                         <Card className="p-6">
                             <div className="mb-6 flex items-start justify-between">
@@ -121,8 +115,9 @@ const ViewExtension = () => {
                                     <p className="mt-2 text-gray-600">{extension.description}</p>
                                 </div>
                                 <Button
-                                    className="bg-blue-500 hover:bg-blue-600"
+                                    type="button"
                                     onClick={handleInstall}
+                                    className="bg-blue-500 hover:bg-blue-600"
                                 >
                                     <Download className="mr-2 h-4 w-4" /> Install
                                 </Button>
@@ -133,7 +128,7 @@ const ViewExtension = () => {
                                     <Download className="h-5 w-5 text-gray-400" />
                                     <div>
                                         <p className="text-sm text-gray-500">Downloads</p>
-                                        <p className="font-semibold">{extension.downloadCount}</p>
+                                        <p className="font-semibold">{extension.stats?.downloads || 0}</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center space-x-2">
@@ -154,18 +149,18 @@ const ViewExtension = () => {
                                     <Star className="h-5 w-5 text-gray-400" />
                                     <div>
                                         <p className="text-sm text-gray-500">Rating</p>
-                                        <p className="font-semibold">
-                                            {extension.rating ? Number(extension.rating).toFixed(1) : 'No ratings'}
-                                        </p>
+                                        <p className="font-semibold">{extension.stats?.rating?.toFixed(1) || 'No ratings'}</p>
                                     </div>
                                 </div>
                             </div>
 
                             <div className="flex flex-wrap gap-2">
-                                <Badge variant="secondary">
-                                    <Package className="mr-1 h-3 w-3" />
-                                    {extension.techStack}
-                                </Badge>
+                                {extension.techStack && (
+                                    <Badge variant="secondary">
+                                        <Package className="mr-1 h-3 w-3" />
+                                        {extension.techStack}
+                                    </Badge>
+                                )}
                                 <Badge variant="secondary">
                                     <Tag className="mr-1 h-3 w-3" />
                                     {extension.category}
@@ -173,58 +168,40 @@ const ViewExtension = () => {
                             </div>
                         </Card>
 
-                        {/* Reviews Section */}
                         <Card className="mt-6 p-6">
                             <h2 className="mb-6 text-2xl font-semibold">Reviews</h2>
-                            {user && (
-                                <div className="mb-8 border-b pb-8">
-                                    <h3 className="mb-4 text-lg font-medium">Write a Review</h3>
-                                    <form onSubmit={handleSubmitReview}>
-                                        <div className="mb-4">
-                                            <Rating
-                                                value={newReview.rating}
-                                                onChange={(_, value) => setNewReview(prev => ({ ...prev, rating: value }))}
-                                                size="large"
-                                            />
-                                        </div>
-                                        <textarea
-                                            className="min-h-[100px] w-full rounded-lg border p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
-                                            value={newReview.comment}
-                                            onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
-                                            placeholder="Share your experience with this extension..."
-                                        />
-                                        <Button
-                                            type="submit"
-                                            className="mt-3 bg-blue-500 hover:bg-blue-600"
-                                        >
-                                            Submit Review
-                                        </Button>
-                                    </form>
-                                </div>
-                            )}
+                            <div className="mb-8 border-b pb-8">
+                                <h3 className="mb-4 text-lg font-medium">Write a Review</h3>
+                                <form onSubmit={handleSubmitReview}>
+                                    <div className="mb-4">
+                                        <Rating value={newReview.rating} onChange={(_, value) => setNewReview(prev => ({ ...prev, rating: value }))} size="large" />
+                                    </div>
+                                    <textarea className="min-h-[100px] w-full rounded-lg border p-3 focus:border-blue-500 focus:ring-2 focus:ring-blue-200" value={newReview.comment} onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))} placeholder="Share your experience with this extension..." />
+                                    <Button type="submit" className="mt-3 bg-blue-500 hover:bg-blue-600">
+                                        Submit Review
+                                    </Button>
+                                </form>
+                            </div>
 
                             <div className="space-y-6">
-                                {reviews.length > 0 ? (
-                                    reviews.map((review) => (
-                                        <div key={review._id} className="border-b pb-6 last:border-0">
-                                            <div className="mb-2 flex items-center justify-between">
-                                                <div className="flex items-center space-x-2">
-                                                    <div className="h-8 w-8 rounded-full bg-gray-200"></div>
-                                                    <span className="font-medium">{review.user?.name || 'Anonymous'}</span>
-                                                </div>
-                                                <Rating value={review.rating} readOnly size="small" />
+                                {reviews.length > 0 ? reviews.map((review) => (
+                                    <div key={review._id} className="border-b pb-6 last:border-0">
+                                        <div className="mb-2 flex items-center justify-between">
+                                            <div className="flex items-center space-x-2">
+                                                <div className="h-8 w-8 rounded-full bg-gray-200"></div>
+                                                <span className="font-medium">{review.user?.name || 'Anonymous'}</span>
                                             </div>
-                                            <p className="text-gray-600">{review.comment}</p>
+                                            <Rating value={review.rating} readOnly size="small" />
                                         </div>
-                                    ))
-                                ) : (
+                                        <p className="text-gray-600">{review.comment}</p>
+                                    </div>
+                                )) : (
                                     <p className="text-center text-gray-500">No reviews yet. Be the first to review!</p>
                                 )}
                             </div>
                         </Card>
                     </div>
 
-                    {/* Sidebar */}
                     <div className="md:col-span-1">
                         <Card className="p-6">
                             <h2 className="mb-4 text-xl font-semibold">Installation</h2>
@@ -232,7 +209,7 @@ const ViewExtension = () => {
                                 To install this extension, click the Install button or use VS Code Quick Open (Ctrl+P) and paste:
                             </p>
                             <div className="bg-gray-100 p-3 rounded-md">
-                                <code>ext install {extension.name.toLowerCase()}</code>
+                                <code>ext install {extension.identifier}</code>
                             </div>
                         </Card>
                     </div>
@@ -243,3 +220,5 @@ const ViewExtension = () => {
 };
 
 export default ViewExtension;
+
+

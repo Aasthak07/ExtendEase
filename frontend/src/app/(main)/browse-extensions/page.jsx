@@ -1,6 +1,5 @@
 "use client";
 
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,9 +22,11 @@ const Browse = () => {
   useEffect(() => {
     const fetchExtensions = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/extensions");
-        setExtensions(response.data);
-        setFilteredExtensions(response.data);
+        const response = await fetch("http://localhost:5000/extensions");
+        if (!response.ok) throw new Error('Failed to fetch extensions');
+        const data = await response.json();
+        setExtensions(data);
+        setFilteredExtensions(data);
       } catch (error) {
         console.error("Error fetching extensions:", error);
       } finally {
@@ -137,16 +138,19 @@ const Browse = () => {
             </div>
           )}
 
-          {/* Only show install button if published and has downloadUrl */}
-          {ext.published && ext.downloadUrl && (
-            <Button className="w-full" asChild>
-              <a href={ext.downloadUrl} target="_blank" rel="noopener noreferrer">
-                <Download className="h-4 w-4 mr-2" /> Install Extension
-              </a>
+          {/* Install button - only show if published and has required fields */}
+          {ext.published && ext.publisher && ext.identifier ? (
+            <Button 
+              className="w-full" 
+              onClick={(e) => {
+                e.stopPropagation();
+                const vsCodeUrl = `vscode:extension/${ext.publisher.trim()}.${ext.identifier.trim()}`;
+                window.location.href = vsCodeUrl;
+              }}
+            >
+              <Download className="h-4 w-4 mr-2" /> Install Extension
             </Button>
-          )}
-          {/* If not published or no downloadUrl, show a disabled button (not an <a> tag) */}
-          {(!ext.published || !ext.downloadUrl) && (
+          ) : (
             <Button className="w-full" disabled>
               <Download className="h-4 w-4 mr-2" /> Install Extension
             </Button>
