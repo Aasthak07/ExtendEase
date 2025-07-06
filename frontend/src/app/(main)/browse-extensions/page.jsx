@@ -126,7 +126,7 @@ const Browse = () => {
           )}
 
           {ext.stats && (
-            <div className="flex items-center justify-between text-sm text-muted-foreground mb-4">
+            <div className="flex items-center justify-between text-sm text-muted-foreground">
               <div className="flex items-center gap-1">
                 <Download className="h-4 w-4" />
                 {formatNumber(ext.stats.downloads)}
@@ -136,24 +136,6 @@ const Browse = () => {
                 {typeof ext.stats.rating === "number" ? ext.stats.rating.toFixed(1) : "N/A"}
               </div>
             </div>
-          )}
-
-          {/* Install button - only show if published and has required fields */}
-          {ext.published && ext.publisher && ext.identifier ? (
-            <Button 
-              className="w-full" 
-              onClick={(e) => {
-                e.stopPropagation();
-                const vsCodeUrl = `vscode:extension/${ext.publisher.trim()}.${ext.identifier.trim()}`;
-                window.location.href = vsCodeUrl;
-              }}
-            >
-              <Download className="h-4 w-4 mr-2" /> Install Extension
-            </Button>
-          ) : (
-            <Button className="w-full" disabled>
-              <Download className="h-4 w-4 mr-2" /> Install Extension
-            </Button>
           )}
         </CardContent>
       </Card>

@@ -40,20 +40,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a single extension by ID (move this above the /:id/publish and /:id routes to avoid route conflicts)
-router.get('/:id', async (req, res, next) => {
-  // If the id is 'publish', skip to next route
-  if (req.params.id === 'publish') return next();
-  try {
-    const extension = await Extension.findById(req.params.id);
-    if (!extension) return res.status(404).json({ error: 'Extension not found' });
-    res.json(extension);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-
 // Get a single extension by ID
 router.get('/:id', async (req, res) => {
   try {

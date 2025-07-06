@@ -8,6 +8,7 @@ import { ArrowLeft, Download, Star, Clock, User, Package, Tag } from 'lucide-rea
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import toast from 'react-hot-toast';
 
 const ViewExtension = () => {
     const { id } = useParams();
@@ -84,11 +85,21 @@ const ViewExtension = () => {
     };
 
     const handleInstall = () => {
+        // Check if extension has required fields for VS Code installation
         if (!extension?.identifier || !extension?.publisher) {
             console.error('Missing identifier or publisher:', extension);
-            return alert('Extension info missing');
+            alert('This extension cannot be installed directly. Please contact the developer for installation instructions.');
+            return;
         }
-        const vsCodeUrl = `vscode:extension/${extension.publisher.trim()}.${extension.identifier.trim()}`;
+        
+        // Validate that the fields are not empty strings
+        if (!extension.identifier.trim() || !extension.publisher.trim()) {
+            alert('Extension installation information is incomplete. Please contact the developer.');
+            return;
+        }
+        
+        const vsCodeUrl = `vscode:extension/${extension.identifier.trim()}`;
+        alert('Redirecting to VS Code', vsCodeUrl);
         console.log('Redirecting to VS Code:', vsCodeUrl);
         window.location.href = vsCodeUrl;
     };
@@ -114,13 +125,24 @@ const ViewExtension = () => {
                                     <h1 className="text-3xl font-bold text-gray-900">{extension.name}</h1>
                                     <p className="mt-2 text-gray-600">{extension.description}</p>
                                 </div>
-                                <Button
-                                    type="button"
-                                    onClick={handleInstall}
-                                    className="bg-blue-500 hover:bg-blue-600"
-                                >
-                                    <Download className="mr-2 h-4 w-4" /> Install
-                                </Button>
+                                {extension.identifier && extension.publisher ? (
+                                    <Button
+                                        type="button"
+                                        onClick={handleInstall}
+                                        className="bg-blue-500 hover:bg-blue-600"
+                                    >
+                                        <Download className="mr-2 h-4 w-4" /> Install
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        type="button"
+                                        disabled
+                                        className="bg-gray-400 cursor-not-allowed"
+                                        title="Installation information not available"
+                                    >
+                                        <Download className="mr-2 h-4 w-4" /> Install Unavailable
+                                    </Button>
+                                )}
                             </div>
 
                             <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -205,12 +227,27 @@ const ViewExtension = () => {
                     <div className="md:col-span-1">
                         <Card className="p-6">
                             <h2 className="mb-4 text-xl font-semibold">Installation</h2>
-                            <p className="mb-4 text-sm text-gray-600">
-                                To install this extension, click the Install button or use VS Code Quick Open (Ctrl+P) and paste:
-                            </p>
-                            <div className="bg-gray-100 p-3 rounded-md">
-                                <code>ext install {extension.identifier}</code>
-                            </div>
+                            {extension.identifier ? (
+                                <>
+                                    <p className="mb-4 text-sm text-gray-600">
+                                        To install this extension, click the Install button or use VS Code Quick Open (Ctrl+P) and paste:
+                                    </p>
+                                    <div className="bg-gray-100 p-3 rounded-md">
+                                        <code>ext install {extension.identifier}</code>
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <p className="mb-4 text-sm text-gray-600">
+                                        This extension doesn't have installation information available.
+                                    </p>
+                                    <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-md">
+                                        <p className="text-sm text-yellow-800">
+                                            Please contact the developer ({extension.developer}) for installation instructions.
+                                        </p>
+                                    </div>
+                                </>
+                            )}
                         </Card>
                     </div>
                 </div>

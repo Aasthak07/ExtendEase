@@ -1,12 +1,61 @@
 'use client'
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaCheckCircle, FaTimesCircle, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
 
 export default function RedirectAddExtension() {
   const [extensions, setExtensions] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [showDetails, setShowDetails] = useState(null);
+  const [editingId, setEditingId] = useState(null);
+  const [imagePreview, setImagePreview] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [form, setForm] = useState({
+    name: '',
+    logo: '',
+    description: '',
+    features: '',
+    version: '',
+    developer: '',
+    publisher: '',
+    category: '',
+    identifier: ''
+  });
   const router = useRouter();
   const [search, setSearch] = useState('');
+
+  // Cloudinary configuration - replace with your actual values
+  const CLOUDINARY_CLOUD_NAME = 'dhxn3h7vx'; // Replace with your cloud name
+  const CLOUDINARY_UPLOAD_PRESET = 'extension'; // Replace with your upload preset
+
+  // Upload image to Cloudinary
+  const uploadToCloudinary = async (file) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      return data.secure_url; // Return the secure URL of the uploaded image
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      throw new Error('Failed to upload image to Cloudinary');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   useEffect(() => {
     const fetchExtensions = async () => {
       try {
@@ -21,39 +70,64 @@ export default function RedirectAddExtension() {
   }, []);
 
   // Handle image upload
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm({ ...form, logo: reader.result });
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // Show preview immediately
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to Cloudinary
+        const cloudinaryUrl = await uploadToCloudinary(file);
+        setForm({ ...form, logo: cloudinaryUrl });
+      } catch (error) {
+        alert('Error uploading image: ' + error.message);
+        setImagePreview('');
+      }
     }
   };
 
   // Add or update extension
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validate required fields
+    if (!form.name || !form.developer || !form.publisher || !form.category || !form.identifier || !form.version || !form.description) {
+      alert('Please fill in all required fields');
+      return;
+    }
+
+    // Prepare extension data
+    const extensionData = {
+      ...form,
+      features: form.features ? form.features.split(',').map(f => f.trim()).filter(f => f) : [],
+      published: false, // Default to unpublished
+      stats: {
+        downloads: 0,
+        rating: 0
+      }
+    };
+
     if (editingId) {
       // Update extension via backend
       try {
         const res = await fetch(`http://localhost:5000/extensions/${editingId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            ...form,
-            features: form.features.split(',').map(f => f.trim()),
-          }),
+          body: JSON.stringify(extensionData),
         });
         if (!res.ok) throw new Error('Failed to update extension');
         const updated = await res.json();
         setExtensions(extensions.map(ext => ext._id === editingId ? updated : ext));
         setEditingId(null);
-        setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' });
+        setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', category: '', identifier: '' });
         setImagePreview('');
         setShowForm(false);
+        alert('Extension updated successfully!');
         return;
       } catch (err) {
         alert('Error updating extension: ' + err.message);
@@ -65,17 +139,15 @@ export default function RedirectAddExtension() {
       const res = await fetch('http://localhost:5000/extensions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...form,
-          features: form.features.split(',').map(f => f.trim()),
-        }),
+        body: JSON.stringify(extensionData),
       });
       if (!res.ok) throw new Error('Failed to save extension');
       const saved = await res.json();
       setExtensions([...extensions, saved]);
-      setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' });
+      setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', category: '', identifier: '' });
       setImagePreview('');
       setShowForm(false);
+      alert('Extension added successfully!');
     } catch (err) {
       alert('Error saving extension: ' + err.message);
     }
@@ -91,7 +163,11 @@ export default function RedirectAddExtension() {
       features: ext.features.join(', '),
       version: ext.version || '',
       developer: ext.developer || '',
+      publisher: ext.publisher || '',
+      category: ext.category || '',
+      identifier: ext.identifier || ''
     });
+    // If logo is already a Cloudinary URL, use it directly
     setImagePreview(ext.logo || '');
     setShowForm(true);
   };
@@ -132,7 +208,7 @@ export default function RedirectAddExtension() {
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Extension Management</h1>
         <button
-          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }}
+          onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', category: '', identifier: '' }); setImagePreview(''); }}
           className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition font-semibold"
         >
           <FaPlus /> Add Extension
@@ -200,11 +276,10 @@ export default function RedirectAddExtension() {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-lg relative animate-fadeIn">
-            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }} className="absolute top-3 right-3 text-2xl text-gray-400 hover:text-gray-700">&times;</button>
+            <button onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', category: '', identifier: '' }); setImagePreview(''); }} className="absolute top-3 right-3 text-2xl text-gray-400 hover:text-gray-700">&times;</button>
             <h2 className="text-2xl font-bold mb-4">{editingId ? 'Edit Extension' : 'Add New Extension'}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-
                 <label className="block text-sm font-medium mb-1">Extension Name</label>
                 <input required value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
               </div>
@@ -213,8 +288,33 @@ export default function RedirectAddExtension() {
                 <input required value={form.developer} onChange={e => setForm({ ...form, developer: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
               </div>
               <div>
+                <label className="block text-sm font-medium mb-1">Publisher</label>
+                <input required value={form.publisher} onChange={e => setForm({ ...form, publisher: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Category</label>
+                <select required value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200">
+                  <option value="">Select a category</option>
+                  <option value="Productivity">Productivity</option>
+                  <option value="Development">Development</option>
+                  <option value="Design">Design</option>
+                  <option value="Communication">Communication</option>
+                  <option value="Entertainment">Entertainment</option>
+                  <option value="Education">Education</option>
+                  <option value="Utilities">Utilities</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Identifier</label>
+                <input required value={form.identifier} onChange={e => setForm({ ...form, identifier: e.target.value })} placeholder="unique-extension-id" className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+              </div>
+              <div>
                 <label className="block text-sm font-medium mb-1">Logo Image</label>
                 <input type="file" accept="image/*" onChange={handleImageChange} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+                {uploading && (
+                  <div className="mt-2 text-sm text-blue-600">Uploading to Cloudinary...</div>
+                )}
                 {imagePreview && (
                   <img src={imagePreview} alt="Preview" className="mt-2 w-20 h-20 object-cover rounded border" />
                 )}
@@ -232,7 +332,7 @@ export default function RedirectAddExtension() {
                 <textarea required value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} className="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-200 min-h-[80px]" />
               </div>
               <div className="flex justify-end gap-2 mt-4">
-                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '' }); setImagePreview(''); }} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 font-semibold">Cancel</button>
+                <button type="button" onClick={() => { setShowForm(false); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', category: '', identifier: '' }); setImagePreview(''); }} className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 font-semibold">Cancel</button>
                 <button type="submit" className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold shadow">{editingId ? 'Update' : 'Add'} Extension</button>
               </div>
             </form>

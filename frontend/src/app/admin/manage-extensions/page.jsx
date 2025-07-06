@@ -21,6 +21,39 @@ export default function AdminManageExtensions() {
   const [showDetails, setShowDetails] = useState(null);
   const [showForm, setShowForm] = useState(false);
   const [imagePreview, setImagePreview] = useState('');
+  const [uploading, setUploading] = useState(false);
+
+  // Cloudinary configuration
+  const CLOUDINARY_CLOUD_NAME = 'dhxn3h7vx';
+  const CLOUDINARY_UPLOAD_PRESET = 'extension';
+
+  // Upload image to Cloudinary
+  const uploadToCloudinary = async (file) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+      formData.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Upload failed');
+      }
+
+      const data = await response.json();
+      return data.secure_url; // Return the secure URL of the uploaded image
+    } catch (error) {
+      console.error('Error uploading to Cloudinary:', error);
+      throw new Error('Failed to upload image to Cloudinary');
+    } finally {
+      setUploading(false);
+    }
+  };
 
   // Fetch extensions from backend
   useEffect(() => {
@@ -37,15 +70,24 @@ export default function AdminManageExtensions() {
   }, []);
 
   // Handle image upload
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setForm({ ...form, logo: reader.result });
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      try {
+        // Show preview immediately
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setImagePreview(reader.result);
+        };
+        reader.readAsDataURL(file);
+
+        // Upload to Cloudinary
+        const cloudinaryUrl = await uploadToCloudinary(file);
+        setForm({ ...form, logo: cloudinaryUrl });
+      } catch (error) {
+        alert('Error uploading image: ' + error.message);
+        setImagePreview('');
+      }
     }
   };
 
@@ -111,6 +153,7 @@ export default function AdminManageExtensions() {
       identifier: ext.identifier || '',
       category: ext.category || categories[0],
     });
+    // If logo is already a Cloudinary URL, use it directly
     setImagePreview(ext.logo || '');
     setShowForm(true);
   };
@@ -250,6 +293,9 @@ export default function AdminManageExtensions() {
                 <div>
                   <label className="block text-sm font-semibold mb-2 text-gray-700">Logo Image</label>
                   <input type="file" accept="image/*" onChange={handleImageChange} className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-200" />
+                  {uploading && (
+                    <div className="mt-2 text-sm text-blue-600">Uploading to Cloudinary...</div>
+                  )}
                   {imagePreview && (
                     <img src={imagePreview} alt="Preview" className="mt-3 w-24 h-24 max-h-40 object-contain rounded border mx-auto" />
                   )}
