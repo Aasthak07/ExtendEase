@@ -97,6 +97,18 @@ const extensions = [
     published: true,
     stats: { downloads: 2500000, rating: 4.7 }
   },
+   {
+    name: 'ES7+ React/Redux/React-Native snippets',
+    identifier: 'es7-react-js-snippets',
+    publisher: 'dsznajder',
+    version: '4.4.3',
+    description: 'Snippets for React, Redux, React-Native.',
+    category: 'Snippets',
+    features: ['JSX', 'hooks', 'useEffect', 'Redux snippets'],
+    developer: 'dsznajder',
+    published: true,
+    stats: { downloads: 2500000, rating: 4.7 }
+  },
   {
     name: 'Prettier - Code formatter',
     identifier: 'prettier-vscode',

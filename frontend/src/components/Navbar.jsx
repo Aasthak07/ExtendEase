@@ -21,64 +21,64 @@ const Navbar = () => {
   const navLinks = [
     { href: "#", label: "All Extensions" },
     { href: "#", label: "Featured" },
-    { href: "#", label: "PlayGround" },
     { href: "/about-us", label: "About" },
     { href: "#", label: "Help" },
-    { href: "/admin/manage-extensions", label: "Admin: Manage Extensions" },
   ];
 
   return (
-    <div className="bg-black">
-      <nav className="text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            {/* Left: Logo - make it most leftmost */}
-            <div className="flex items-center space-x-4 flex-shrink-0">
-              <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-                <img
-                  src="/Math Symbols Logo.png"
-                  alt=" Logo"
-                  className="h-15 w-auto"
-                />
-                <div className="hidden sm:flex flex-col font-semibold text-lg leading-tight">
-                  <span>Extend</span>
-                  <span>Ease</span>
-                </div>
-              </Link>
-            </div>
+    <div className="w-3/4 ml-auto z-50">
+      <nav className="bg-gradient-to-r from-black via-indigo-900 to-blue-900 text-white shadow-lg rounded-2xl bg-opacity-95">
+        <div className="px-4 py-4">
+          <div className="flex items-center justify-between w-full">
+            {/* Logo */}
+            {/* Logo */}
 
-            {/* Center: Desktop Navigation Links */}
-            <div className="hidden md:flex items-center space-x-6">
+            {/* Navigation Links (centered and grow) */}
+            <div className="hidden md:flex flex-1 items-center justify-center space-x-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.label}
                   href={link.href}
-                  className="hover:text-gray-300 transition-colors duration-200 text-sm font-medium"
+                  className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
                 >
                   {link.label}
                 </Link>
               ))}
             </div>
 
-            {/* Right: Search + Auth */}
-            <div className="flex items-center space-x-4">
-              {/* Search Bar */}
-              <form onSubmit={handleSearch} className="hidden md:flex items-center bg-white rounded-full px-3 py-2">
-                <FaSearch className="text-gray-500 text-sm" />
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 w-32 lg:w-48"
+            {/* Search + Auth (right) */}
+            <div className="flex items-center space-x-3">
+              {/* Search Icon */}
+              <div className="relative group">
+                <button
+                  type="button"
+                  className="text-white hover:text-gray-300 transition-colors duration-200 p-1"
                   aria-label="Search"
-                />
-              </form>
+                >
+                  <FaSearch className="text-lg" />
+                </button>
+                {/* Hover Search Input */}
+                <div className="absolute right-0 top-full mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
+                  <form onSubmit={handleSearch} className="bg-white rounded-lg shadow-lg p-2 min-w-[200px]">
+                    <div className="flex items-center">
+                      <FaSearch className="text-gray-500 text-sm mr-2" />
+                      <input
+                        type="text"
+                        placeholder="Search..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 flex-1"
+                        aria-label="Search"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
 
               {/* Auth Links */}
               <Link
                 href="/login"
-                className="hover:text-gray-300 transition-colors duration-200 text-sm font-medium"
+                className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
               >
                 Sign in
               </Link>
@@ -87,13 +87,13 @@ const Navbar = () => {
                 className="hover:text-gray-300 transition-colors duration-200"
                 aria-label="Sign up"
               >
-                <FaUserCircle className="text-2xl" />
+                <FaUserCircle className="text-lg" />
               </Link>
 
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="md:hidden p-2 rounded-md hover:bg-indigo-400 transition-colors duration-200"
+                className="md:hidden p-2 rounded-md hover:bg-indigo-300 transition-colors duration-200"
                 aria-label="Toggle mobile menu"
               >
                 {isMobileMenuOpen ? (
@@ -108,12 +108,12 @@ const Navbar = () => {
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
             <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-purple-700 rounded-lg mt-2">
+              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-b from-black via-indigo-900 to-blue-900 rounded-2xl mt-2 bg-opacity-95">
                 {navLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-indigo-400 transition-colors duration-200"
+                    className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-indigo-300 transition-colors duration-200"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     {link.label}

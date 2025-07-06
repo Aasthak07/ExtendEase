@@ -189,7 +189,7 @@ const Browse = () => {
             placeholder="Search extensions..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10"
+            className="pl-10 text-white placeholder-white"
           />
         </div>
         <Select value={sortBy} onValueChange={setSortBy}>

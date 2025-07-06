@@ -5,6 +5,15 @@ import ClientLayout from '@/components/ClientLayout';
 export const metadata = {
   title: "VS Code Extensions",
   description: "Browse and manage Visual Studio Code extensions",
+  icons: {
+    icon: "/sq.ico", // Path to your logo in the public folder
+    shortcut: "/sq.ico",
+    apple: "/whiteLogo.png",
+    other: [
+      { rel: "icon", url: "/whiteLogo.png" },
+      { rel: "apple-touch-icon", url: "/whiteLogo.png" }
+    ]
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -14,7 +23,7 @@ export default function RootLayout({ children }) {
         <Toaster position='top-right' />
         <ClientLayout>
           {/* Main Content */}
-          <main className="flex-1 p-4">
+          <main className="flex-1 py-4">
             {children}
           </main>
           {/* Footer */}
