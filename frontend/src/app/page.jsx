@@ -19,8 +19,9 @@ export default function Page() {
           ExtendEase is your go-to platform for finding, reviewing, and managing the best Visual Studio Code extensions for your workflow.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Link href="/browse" className="px-8 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">Browse Extensions</Link>
-          <Link href="/publishers" className="px-8 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-600 hover:text-white transition">For Publishers</Link>
+          <Link href="/browse-extensions" className="px-8 py-3 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition">Browse Extensions</Link>
+          <Link href="/admin/BrowseExtension" className="px-8 py-3 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition">🚀 Browser Extension Guide</Link>
+          <Link href="/add-extension" className="px-8 py-3 border-2 border-indigo-600 text-indigo-600 font-semibold rounded-lg hover:bg-indigo-600 hover:text-white transition">For Publishers</Link>
         </div>
       </section>
 
@@ -37,18 +38,23 @@ export default function Page() {
 
       {/* Quick Links to Core Features */}
       <section className="w-full bg-indigo-50 py-12">
-        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
-          <Link href="/browse" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+        <div className="max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <Link href="/browse-extensions" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
             <div className="text-4xl mb-2">🔍</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Advanced Search</h3>
             <p className="text-gray-600">Find extensions by category, tech, or keyword.</p>
           </Link>
-          <Link href="/categories" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+          <Link href="/browse-by-category" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
             <div className="text-4xl mb-2">📂</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">Categories</h3>
             <p className="text-gray-600">Browse by domain: Web, AI/ML, UI/UX, and more.</p>
           </Link>
-          <Link href="/publishers" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+          <Link href="/admin/BrowseExtension" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
+            <div className="text-4xl mb-2">🚀</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Browser Extension Guide</h3>
+            <p className="text-gray-600">Learn to create and deploy browser extensions.</p>
+          </Link>
+          <Link href="/add-extension" className="bg-white rounded-xl shadow p-6 hover:shadow-lg transition">
             <div className="text-4xl mb-2">👤</div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">For Publishers</h3>
             <p className="text-gray-600">Upload, manage, and track your extensions.</p>

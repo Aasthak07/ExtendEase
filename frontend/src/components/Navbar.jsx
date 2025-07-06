@@ -19,9 +19,9 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { href: "#", label: "All Extensions" },
+    { href: "/browse-extensions", label: "All Extensions" },
     { href: "#", label: "Featured" },
-    { href: "#", label: "PlayGround" },
+    { href: "/admin/BrowseExtension", label: "PlayGround" },
     { href: "/about-us", label: "About" },
     { href: "#", label: "Help" },
     { href: "/admin/manage-extensions", label: "Admin: Manage Extensions" },
