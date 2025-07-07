@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle, FaEye, FaPlus } from 'react-icons/fa';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 
 export default function AdminManageExtensions() {
   const [extensions, setExtensions] = useState([]);
@@ -192,7 +194,7 @@ export default function AdminManageExtensions() {
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8 gap-4">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">Extension Management</h1>
+        <h1 className="text-3xl font-extrabold tracking-tight text-white">Extension Management</h1>
         <button
           onClick={() => { setShowForm(true); setEditingId(null); setForm({ name: '', logo: '', description: '', features: '', version: '', developer: '', publisher: '', identifier: '', category: categories[0] }); setImagePreview(''); }}
           className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition font-semibold"
@@ -203,12 +205,15 @@ export default function AdminManageExtensions() {
 
       {/* Search Bar */}
       <div className="mb-6 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
-        <input
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          placeholder="Search extensions..."
-          className="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-200 w-full md:w-1/2"
-        />
+        <div className="relative w-full md:w-1/2">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+          <Input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search extensions..."
+            className="pl-10 text-white placeholder-white bg-gray-900 border-0 shadow-md"
+          />
+        </div>
       </div>
 
       {/* Extension Cards */}

@@ -1,14 +1,42 @@
 // src/app/page.jsx
 'use client';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Threads from '../components/Threads';
 
 export default function Page() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    // Trigger animation after component mounts
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="font-sans bg-gradient-to-br from-black via-indigo-900 to-blue-900 min-h-screen w-full flex items-start justify-start relative overflow-hidden">
+    <>
+      <style jsx>{`
+        @keyframes fadeInLetter {
+          0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px) scale(0.9);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+      `}</style>
+      <div className="font-sans bg-gradient-to-br from-black via-indigo-900 to-blue-900 min-h-screen w-full flex items-start justify-start relative overflow-hidden">
       {/* Animated Background (Threads) */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0">   
         <Threads
           color={[0.388, 0.408, 0.945]}
           amplitude={1.2}
@@ -16,23 +44,155 @@ export default function Page() {
           enableMouseInteraction={true}
         />
       </div>
-      {/* Top-left Logo */}
-      <Link href="/" className="fixed top-4 left-4 z-50 flex items-center space-x-2 hover:opacity-80 transition-opacity">
-        <img
-          src="/whiteLogo.png"
-          alt="ExtendEase Logo"
-          className="h-10 w-auto"
-        />
-        <span className="hidden sm:inline font-semibold text-white text-lg tracking-tight drop-shadow-lg">ExtendEase</span>
-      </Link>
+
       {/* Left-aligned Content */}
       <div className="relative z-10 flex flex-col items-start text-left px-6 py-12 w-full max-w-2xl mx-0 mt-24">
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 drop-shadow-lg">
-          <span className="inline-block animate-fadeInWord" style={{ animationDelay: '0s' }}>Discover,</span>{' '}
-          <span className="inline-block animate-fadeInWord" style={{ animationDelay: '0.5s' }}>Manage</span>{' '}
-          <span className="inline-block animate-fadeInWord" style={{ animationDelay: '1s' }}>&</span>{' '}
-          <span className="inline-block animate-fadeInWord" style={{ animationDelay: '1.5s' }}>Publish</span>{' '}
-          <span className="inline-block animate-fadeInWord" style={{ animationDelay: '2s' }}><span className="text-indigo-200">VS Code Extensions</span></span>
+        <h1 
+          className="text-3xl sm:text-4xl font-extrabold text-white mb-4 drop-shadow-lg transition-all duration-1000 ease-out"
+          style={{
+            opacity: isVisible ? 1 : 0,
+            transform: isVisible 
+              ? 'translateY(0) translateX(0) scale(1)' 
+              : 'translateY(50px) translateX(-30px) scale(0.8)',
+            transition: 'all 1s ease-out'
+          }}
+        >
+          {isVisible && (
+            <>
+              {/* First line: Discover, Manage & Publish */}
+              <div className="block">
+                {'Discover,'.split('').map((letter, index) => (
+                  <span
+                    key={`white-${index}`}
+                    className="inline-block"
+                    style={{
+                      animation: `fadeInLetter 0.4s ease-out ${index * 0.06}s forwards`,
+                      opacity: 0,
+                      textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(255,255,255,0.8)'
+                    }}
+                  >
+                    {letter}
+                  </span>
+                ))}
+                <span 
+                  className="inline-block"
+                  style={{
+                    animation: `fadeInLetter 0.4s ease-out 0.54s forwards`,
+                    opacity: 0,
+                                          marginRight: '0.001em'
+                  }}
+                >
+                  &nbsp;
+                </span>
+                {' Manage '.split('').map((letter, index) => (
+                  <span
+                    key={`white2-${index}`}
+                    className="inline-block"
+                    style={{
+                      animation: `fadeInLetter 0.4s ease-out ${(index + 9) * 0.06}s forwards`,
+                      opacity: 0,
+                      textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(255,255,255,0.8)'
+                    }}
+                  >
+                    {letter}
+                  </span>
+                ))}
+                <span 
+                  className="inline-block"
+                  style={{
+                    animation: `fadeInLetter 0.4s ease-out 0.9s forwards`,
+                    opacity: 0,
+                                         marginLeft: '0.2em',
+                     marginRight: '0.2em'
+                  }}
+                >
+                  &
+                </span>
+                <span className="text-indigo-200 inline-block">
+                  {'Publish'.split('').map((letter, index) => (
+                    <span
+                      key={`indigo-${index}`}
+                      className="inline-block"
+                      style={{
+                        animation: `fadeInLetter 0.4s ease-out ${(index + 18) * 0.06}s forwards`,
+                        opacity: 0,
+                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+              </div>
+              
+              {/* Second line: VS Code Extensions */}
+              <div className="block mt-2">
+                <span className="text-indigo-200 inline-block">
+                  {'VS'.split('').map((letter, index) => (
+                    <span
+                      key={`indigo2-${index}`}
+                      className="inline-block"
+                      style={{
+                        animation: `fadeInLetter 0.4s ease-out ${(index + 25) * 0.06}s forwards`,
+                        opacity: 0,
+                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+                <span 
+                  className="inline-block"
+                  style={{
+                    marginLeft: '0.01em',
+                    marginRight: '0.01em'
+                  }}
+                >
+                  &nbsp;
+                </span>
+                <span className="text-indigo-200 inline-block">
+                  {'Code'.split('').map((letter, index) => (
+                    <span
+                      key={`indigo3-${index}`}
+                      className="inline-block"
+                      style={{
+                        animation: `fadeInLetter 0.4s ease-out ${(index + 27) * 0.06}s forwards`,
+                        opacity: 0,
+                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+                <span 
+                  className="inline-block"
+                  style={{
+                    marginLeft: '0.01em',
+                    marginRight: '0.01em'
+                  }}
+                >
+                  &nbsp;
+                </span>
+                <span className="text-indigo-200 inline-block">
+                  {'Extensions'.split('').map((letter, index) => (
+                    <span
+                      key={`indigo4-${index}`}
+                      className="inline-block"
+                      style={{
+                        animation: `fadeInLetter 0.4s ease-out ${(index + 31) * 0.06}s forwards`,
+                        opacity: 0,
+                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
+                      }}
+                    >
+                      {letter}
+                    </span>
+                  ))}
+                </span>
+              </div>
+            </>
+          )}
         </h1>
         <p className="text-base sm:text-lg text-gray-200 mb-8 drop-shadow-md leading-relaxed">
           ExtendEase is your go-to platform for finding, reviewing, and managing the best Visual Studio Code extensions for your workflow.
@@ -40,10 +200,11 @@ export default function Page() {
         <Link href="/browse-extensions" className="inline-block px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold text-lg shadow-lg hover:bg-indigo-700 transition mb-4">
           Browse Extensions
         </Link>
-        <Link href="/publishers" className="inline-block px-8 py-3 border-2 border-indigo-400 text-indigo-200 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition">
-          For Publishers
+        <Link href="/add-extension" className="inline-block px-8 py-3 border-2 border-indigo-400 text-indigo-200 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition">
+          Add Extension
         </Link>
       </div>
     </div>
+    </>
   );
 }
