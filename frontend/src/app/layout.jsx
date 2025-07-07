@@ -1,6 +1,7 @@
 import { Toaster } from 'react-hot-toast';
 import './globals.css';
 import ClientLayout from '@/components/ClientLayout';
+import { AuthProvider } from '@/components/AuthContext';
 
 export const metadata = {
   title: "VS Code Extensions",
@@ -21,24 +22,26 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className="bg-gray-50 min-h-screen flex flex-col">
         <Toaster position='top-right' />
-        <ClientLayout>
-          {/* Main Content */}
-          <main className="flex-1 py-4">
-            {children}
-          </main>
-          {/* Footer */}
-          {/* <footer className="bg-white border-t mt-12">
-            <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center">
-              <div className="flex items-center gap-2">
-                <img src="/Final logo.ico" alt="ExtendEase Logo" className="h-28 w-28" />
-                <span className="text-lg font-bold text-indigo-600">ExtendEase</span>
+        <AuthProvider>
+          <ClientLayout>
+            {/* Main Content */}
+            <main className="flex-1 py-4">
+              {children}
+            </main>
+            {/* Footer */}
+            {/* <footer className="bg-white border-t mt-12">
+              <div className="max-w-7xl mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center">
+                <div className="flex items-center gap-2">
+                  <img src="/Final logo.ico" alt="ExtendEase Logo" className="h-28 w-28" />
+                  <span className="text-lg font-bold text-indigo-600">ExtendEase</span>
+                </div>
+                <div className="text-gray-500 text-sm mt-4 md:mt-0">
+                  &copy; {new Date().getFullYear()} ExtendEase. All rights reserved.
+                </div>
               </div>
-              <div className="text-gray-500 text-sm mt-4 md:mt-0">
-                &copy; {new Date().getFullYear()} ExtendEase. All rights reserved.
-              </div>
-            </div>
-          </footer> */}
-        </ClientLayout>
+            </footer> */}
+          </ClientLayout>
+        </AuthProvider>
       </body>
     </html>
   );

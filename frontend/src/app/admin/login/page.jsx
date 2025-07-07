@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useAuth } from '@/components/AuthContext';
 
 // Validation schema using Yup
 const LoginSchema = Yup.object().shape({
@@ -23,6 +24,7 @@ export default function AdminLoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
+  const { login } = useAuth();
 
   const handleLogin = async (values, { setSubmitting, setFieldError }) => {
     setIsLoading(true);
@@ -36,16 +38,10 @@ export default function AdminLoginPage() {
         rememberMe: values.rememberMe
       });
 
-      const { token, user } = response.data;
+      const { token } = response.data;
       
-      // Store admin token/session
-      if (values.rememberMe) {
-        localStorage.setItem('adminToken', token);
-        localStorage.setItem('adminUser', JSON.stringify(user));
-      } else {
-        sessionStorage.setItem('adminToken', token);
-        sessionStorage.setItem('adminUser', JSON.stringify(user));
-      }
+      // Use AuthContext login for admin
+      login(token);
 
       // Redirect to admin dashboard
       router.push('/admin/dashboard');

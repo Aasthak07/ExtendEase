@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
+import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function AddExtensionPage() {
+  useProtectedRoute();
+
   return (
     <div className="max-w-3xl mx-auto py-10 px-4">
       {/* 1. Extension Name and Logo */}

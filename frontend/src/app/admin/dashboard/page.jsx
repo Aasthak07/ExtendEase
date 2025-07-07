@@ -1,13 +1,17 @@
 'use client';
 
+import React from 'react';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function AdminDashboard() {
   const [adminUser, setAdminUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+
+  useProtectedRoute({ requireAdmin: true });
 
   useEffect(() => {
     // Check if admin is logged in

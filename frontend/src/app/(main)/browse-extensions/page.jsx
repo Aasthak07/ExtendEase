@@ -1,5 +1,6 @@
 "use client";
 
+import React from 'react';
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -10,8 +11,11 @@ import { Input } from "@/components/ui/input";
 import { Download, Star, Search, Package, User, CheckCircle, XCircle, Filter, Grid3X3, List } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import Link from "next/link";
+import { useProtectedRoute } from '@/components/AuthContext';
 
 const Browse = () => {
+  useProtectedRoute();
+
   const [extensions, setExtensions] = useState([]);
   const [filteredExtensions, setFilteredExtensions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);

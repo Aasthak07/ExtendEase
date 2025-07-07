@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaPlus, FaCheckCircle, FaTimesCircle, FaEye, FaEdit, FaTrash } from 'react-icons/fa';
+import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function RedirectAddExtension() {
   const [extensions, setExtensions] = useState([]);
@@ -202,6 +203,8 @@ export default function RedirectAddExtension() {
     ext.name.toLowerCase().includes(search.toLowerCase()) ||
     ext.description.toLowerCase().includes(search.toLowerCase())
   );
+
+  useProtectedRoute({ requireAdmin: true });
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">

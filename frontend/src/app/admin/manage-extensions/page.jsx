@@ -2,8 +2,11 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle, FaEye, FaPlus } from 'react-icons/fa';
+import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function AdminManageExtensions() {
+  useProtectedRoute({ requireAdmin: true });
+
   const [extensions, setExtensions] = useState([]);
   const [search, setSearch] = useState('');
   const [categories] = useState([

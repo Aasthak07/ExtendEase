@@ -3,10 +3,12 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { FaSearch, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import { useAuth } from './AuthContext';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const { user, logout, isAuthenticated } = useAuth();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -22,7 +24,7 @@ const Navbar = () => {
     { href: "/browse-extensions", label: "All Extensions" },
     { href: "#", label: "Featured" },
     { href: "/about-us", label: "About" },
-    { href: "#", label: "Help" },
+    { href: "/help", label: "Help" },
   ];
 
   return (
@@ -76,19 +78,33 @@ const Navbar = () => {
               </div>
 
               {/* Auth Links */}
-              <Link
-                href="/login"
-                className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
-              >
-                Sign in
-              </Link>
-              <Link
-                href="/signup"
-                className="hover:text-gray-300 transition-colors duration-200"
-                aria-label="Sign up"
-              >
-                <FaUserCircle className="text-lg" />
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <span className="text-xs font-medium mr-2">{user?.email} ({user?.type})</span>
+                  <button
+                    onClick={logout}
+                    className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    href="/login"
+                    className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
+                  >
+                    Sign in
+                  </Link>
+                  <Link
+                    href="/signup"
+                    className="hover:text-gray-300 transition-colors duration-200"
+                    aria-label="Sign up"
+                  >
+                    <FaUserCircle className="text-lg" />
+                  </Link>
+                </>
+              )}
 
               {/* Mobile Menu Button */}
               <button

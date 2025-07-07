@@ -6,11 +6,13 @@ import Link from 'next/link';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
+import { useAuth } from '@/components/AuthContext';
 
 export default function LoginPage() {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { login } = useAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -30,8 +32,7 @@ export default function LoginPage() {
           password: values.password,
         });
         setIsLoading(false);
-        // You can store token or user info here if needed
-        localStorage.setItem('token', response.data.token);
+        login(response.data.token);
         router.push('/');
       } catch (err) {
         setIsLoading(false);
