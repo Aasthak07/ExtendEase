@@ -268,8 +268,8 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
         <section id="components" className="mb-12">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">Core Components of a Browser Extension</h2>
           
-          <div className="grid md:grid-cols-2 gap-8 mb-8">
-            <div className="bg-white rounded-lg shadow-md p-6">
+          <div className="grid md:grid-cols-2 gap-8 mb-8 items-stretch">
+            <div className="bg-white rounded-lg shadow-md p-6 h-full min-h-[300px]">
               <h3 className="text-xl font-semibold mb-3">📄 Manifest File (manifest.json)</h3>
               <p className="text-gray-600 mb-3">
                 The blueprint of your extension that defines its properties, permissions, and structure.
@@ -283,7 +283,7 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
               </ul>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 h-full min-h-[300px]">
               <h3 className="text-xl font-semibold mb-3">⚙️ Background Scripts</h3>
               <p className="text-gray-600 mb-3">
                 Service workers (MV3) or background pages (MV2) that handle events and manage extension state.
@@ -297,7 +297,7 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
               </ul>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 h-full min-h-[300px]">
               <h3 className="text-xl font-semibold mb-3">🌐 Content Scripts</h3>
               <p className="text-gray-600 mb-3">
                 Scripts that run in the context of web pages and can interact with the page's DOM.
@@ -311,7 +311,7 @@ chrome.runtime.sendMessage({ action: 'get-data' }, (response) => {
               </ul>
             </div>
 
-            <div className="bg-white rounded-lg shadow-md p-6">
+            <div className="bg-white rounded-lg shadow-md p-6 h-full min-h-[300px]">
               <h3 className="text-xl font-semibold mb-3">🖥️ UI Components</h3>
               <p className="text-gray-600 mb-3">
                 HTML pages that provide user interface for the extension.

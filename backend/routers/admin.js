@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middleware/auth');
 
 
 // Admin login route
@@ -15,12 +16,25 @@ router.post('/login', async (req, res) => {
     if (!isMatch) return res.status(401).json({ message: 'Invalid credentials' });
 
     // Create JWT token
-    const token = jwt.sign({ id: admin._id, email: admin.email }, 'your_jwt_secret', { expiresIn: '1d' });
+    const token = jwt.sign(
+      { id: admin._id, email: admin.email }, 
+      process.env.JWT_SECRET || 'fallback_secret_key', 
+      { expiresIn: '1d' }
+    );
 
     res.json({
       token,
       user: { id: admin._id, email: admin.email }
     });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Protected route example
+router.get('/profile', authMiddleware, async (req, res) => {
+  try {
+    res.json({ admin: req.admin });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,6 +23,15 @@ const Browse = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState("name");
   const [viewMode, setViewMode] = useState("grid");
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Get search query from URL parameters
+    const urlSearchQuery = searchParams.get('search');
+    if (urlSearchQuery) {
+      setSearchQuery(urlSearchQuery);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const fetchExtensions = async () => {
@@ -160,10 +170,10 @@ const Browse = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent-white text-white">
           Extension Marketplace
         </h1>
-        <p className="text-muted-foreground text-lg">
+        <p className="text-muted-foreground text-lg ">
           Discover and install powerful extensions to enhance your workflow
         </p>
       </div>
@@ -179,9 +189,9 @@ const Browse = () => {
           />
         </div>
         <Select value={sortBy} onValueChange={setSortBy}>
-          <SelectTrigger className="w-48">
+          <SelectTrigger className="w-48 text-white">
             <Filter className="h-4 w-4 mr-2" />
-            <SelectValue placeholder="Sort by" />
+            <SelectValue placeholder="Sort by" className="text-white" />
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="name">Name</SelectItem>
