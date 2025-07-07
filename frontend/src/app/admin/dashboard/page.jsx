@@ -7,31 +7,22 @@ import Link from 'next/link';
 import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function AdminDashboard() {
-  const [adminUser, setAdminUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isAuthenticated, user, loading } = useProtectedRoute({ requireAdmin: true });
   const router = useRouter();
+  const [showUnauthorized, setShowUnauthorized] = React.useState(false);
 
-  useProtectedRoute({ requireAdmin: true });
-
-  useEffect(() => {
-    // Check if admin is logged in
-    const adminToken = localStorage.getItem('adminToken') || sessionStorage.getItem('adminToken');
-    const adminUserData = localStorage.getItem('adminUser') || sessionStorage.getItem('adminUser');
-
-    if (!adminToken || !adminUserData) {
-      router.push('/admin/login');
-      return;
+  React.useEffect(() => {
+    if (!loading && isAuthenticated && user?.type !== 'admin') {
+      setShowUnauthorized(true);
+      const timer = setTimeout(() => {
+        router.replace('/');
+      }, 2000);
+      return () => clearTimeout(timer);
     }
+  }, [isAuthenticated, loading, user, router]);
 
-    try {
-      setAdminUser(JSON.parse(adminUserData));
-    } catch (error) {
-      console.error('Error parsing admin user data:', error);
-      router.push('/admin/login');
-    } finally {
-      setIsLoading(false);
-    }
-  }, [router]);
+  if (loading) return <div>Loading...</div>;
+  if (showUnauthorized) return <div className="text-red-600 text-center mt-10 text-xl font-bold">Unauthorized: You do not have access to this page.</div>;
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
@@ -40,14 +31,6 @@ export default function AdminDashboard() {
     sessionStorage.removeItem('adminUser');
     router.push('/admin/login');
   };
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-indigo-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
@@ -64,7 +47,7 @@ export default function AdminDashboard() {
               <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Welcome, {adminUser?.email}</span>
+              <span className="text-sm text-gray-600">Welcome, {user?.email}</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors"
