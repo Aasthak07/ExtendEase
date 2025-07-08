@@ -29,7 +29,7 @@ export default function RootLayout({ children }) {
           <div className="fixed inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[length:20px_20px] pointer-events-none z-0 min-h-screen"></div>
           
             {/* Main Content */}
-            <main className="flex-1 py-4 relative z-10 min-h-screen">
+            <main className="flex-1 relative z-10 min-h-screen">
               {children}
             </main>
             {/* Footer */}
