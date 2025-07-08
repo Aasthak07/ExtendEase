@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FaSearch, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
+import { FaSearch, FaUserCircle, FaBars, FaTimes, FaCog, FaChartBar, FaPlus, FaList, FaUsers } from "react-icons/fa";
 import { useAuth } from './AuthContext';
 
-const Navbar = () => {
+const AdminNavbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showSearch, setShowSearch] = useState(false);
@@ -16,7 +16,7 @@ const Navbar = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      router.push(`/browse-extensions?search=${encodeURIComponent(searchQuery.trim())}`);
+      router.push(`/admin/BrowseExtension?search=${encodeURIComponent(searchQuery.trim())}`);
       setSearchQuery('');
       setShowSearch(false);
       setIsMobileMenuOpen(false);
@@ -27,11 +27,12 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const navLinks = [
-    { href: "/browse-extensions", label: "All Extensions" },
-    { href: "#", label: "Featured" },
-    { href: "/about-us", label: "About" },
-    { href: "/help", label: "Help" },
+  const adminNavLinks = [
+    { href: "/admin/dashboard", label: "Dashboard", icon: FaChartBar },
+    { href: "/admin/addextension", label: "Add Extension", icon: FaPlus },
+    { href: "/admin/manage-extensions", label: "Manage Extensions", icon: FaList },
+    { href: "/admin/BrowseExtension", label: "Browse Extensions", icon: FaSearch },
+    { href: "/admin/handle-extension", label: "Handle Requests", icon: FaCog },
   ];
 
   return (
@@ -40,26 +41,32 @@ const Navbar = () => {
         <div className="px-4 py-4">
           <div className="flex items-center justify-between w-full">
             {/* Logo */}
-            <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+            <Link href="/admin/dashboard" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
               <img
                 src="/whiteLogo.png"
-                alt="ExtendEase Logo"
+                alt="ExtendEase Admin Logo"
                 className="h-8 w-auto"
               />
-              <span className="hidden sm:inline font-semibold text-white text-lg tracking-tight drop-shadow-lg">ExtendEase</span>
+              <span className="hidden sm:inline font-semibold text-white text-lg tracking-tight drop-shadow-lg">
+                ExtendEase Admin
+              </span>
             </Link>
 
             {/* Navigation Links (centered and grow) */}
             <div className="hidden md:flex flex-1 items-center justify-center space-x-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium hover:scale-105 transform"
-                >
-                  {link.label}
-                </Link>
-              ))}
+              {adminNavLinks.map((link) => {
+                const IconComponent = link.icon;
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="flex items-center space-x-1 hover:text-gray-300 transition-colors duration-200 text-xs font-medium hover:scale-105 transform px-3 py-2 rounded-md hover:bg-white/10"
+                  >
+                    <IconComponent className="text-sm" />
+                    <span>{link.label}</span>
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Search + Auth (right) */}
@@ -74,7 +81,7 @@ const Navbar = () => {
                   onClick={() => {
                     setShowSearch((prev) => !prev);
                     setTimeout(() => {
-                      const input = document.getElementById('navbar-search-input');
+                      const input = document.getElementById('admin-navbar-search-input');
                       if (input) input.focus();
                     }, 50);
                   }}
@@ -85,9 +92,9 @@ const Navbar = () => {
                   <form onSubmit={handleSearch} className="bg-white/95 backdrop-blur-md rounded-lg shadow-lg p-2 min-w-[200px] border border-white/20 flex items-center absolute right-0 top-full mt-2 z-50">
                     <FaSearch className="text-gray-500 text-sm mr-2" />
                     <input
-                      id="navbar-search-input"
+                      id="admin-navbar-search-input"
                       type="text"
-                      placeholder="Search..."
+                      placeholder="Search extensions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 flex-1"
@@ -101,10 +108,12 @@ const Navbar = () => {
               {/* Auth Links */}
               {isAuthenticated ? (
                 <>
-                  <span className="text-xs font-medium mr-2">{user?.email} ({user?.type})</span>
+                  <span className="text-xs font-medium mr-2 hidden sm:inline">
+                    {user?.email} (Admin)
+                  </span>
                   <button
                     onClick={logout}
-                    className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium"
+                    className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium hover:scale-105 transform"
                   >
                     Logout
                   </button>
@@ -112,15 +121,15 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link
-                    href="/login"
+                    href="/admin/login"
                     className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium hover:scale-105 transform"
                   >
-                    Sign in
+                    Admin Login
                   </Link>
                   <Link
-                    href="/signup"
+                    href="/admin/login"
                     className="hover:text-gray-300 transition-colors duration-200 hover:scale-110 transform"
-                    aria-label="Sign up"
+                    aria-label="Admin login"
                   >
                     <FaUserCircle className="text-lg" />
                   </Link>
@@ -145,20 +154,21 @@ const Navbar = () => {
           {/* Mobile Menu */}
           {isMobileMenuOpen && (
             <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-b from-black via-indigo-900 to-blue-900 mt-2 bg-opacity-95 backdrop-blur-md border-b border-white/10 animate-slide-down">
-                {navLinks.map((link) => (
-                                  <Link
-                  key={link.label}
-                  href={link.href}
-                  className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-indigo-300/20 transition-colors duration-200 hover:scale-105 transform"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                    {link.label}
-                  </Link>
-                ))}
-                <button className="w-full text-left px-3 py-2 rounded-md text-base font-medium bg-gray-800/50 hover:bg-gray-700/50 transition-colors duration-200 hover:scale-105 transform">
-                  Free Visual Studio
-                </button>
+                              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-b from-black via-indigo-900 to-blue-900 mt-2 bg-opacity-95 backdrop-blur-md border-b border-white/10 animate-slide-down">
+                {adminNavLinks.map((link) => {
+                  const IconComponent = link.icon;
+                  return (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className="flex items-center space-x-2 px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-white/10 transition-colors duration-200 hover:scale-105 transform"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <IconComponent className="text-sm" />
+                      <span>{link.label}</span>
+                    </Link>
+                  );
+                })}
 
                 {/* Mobile Search */}
                 <form onSubmit={handleSearch} className="px-3 py-2">
@@ -166,7 +176,7 @@ const Navbar = () => {
                     <FaSearch className="text-gray-500 text-sm" />
                     <input
                       type="text"
-                      placeholder="Search..."
+                      placeholder="Search extensions..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       className="ml-2 bg-transparent focus:outline-none text-sm text-gray-800 placeholder:text-gray-500 flex-1"
@@ -183,4 +193,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default AdminNavbar; 
