@@ -24,6 +24,8 @@ export default function RedirectAddExtension() {
   });
   const router = useRouter();
   const [search, setSearch] = useState('');
+  const { isAuthenticated, user, loading } = useProtectedRoute({ requireAdmin: true });
+  const [showUnauthorized, setShowUnauthorized] = React.useState(false);
 
   // Cloudinary configuration - replace with your actual values
   const CLOUDINARY_CLOUD_NAME = 'dhxn3h7vx'; // Replace with your cloud name
@@ -204,7 +206,18 @@ export default function RedirectAddExtension() {
     ext.description.toLowerCase().includes(search.toLowerCase())
   );
 
-  useProtectedRoute({ requireAdmin: true });
+  useEffect(() => {
+    if (!loading && isAuthenticated && user?.type !== 'admin') {
+      setShowUnauthorized(true);
+      const timer = setTimeout(() => {
+        router.replace('/');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isAuthenticated, loading, user, router]);
+
+  if (loading) return <div>Loading...</div>;
+  if (showUnauthorized) return <div className="text-red-600 text-center mt-10 text-xl font-bold">Unauthorized: You do not have access to this page.</div>;
 
   return (
     <div className="max-w-6xl mx-auto py-10 px-4">
