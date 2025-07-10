@@ -8,7 +8,7 @@ export default function AdminDashboard() {
   const router = useRouter();
 
   React.useEffect(() => {
-    console.log(user);
+    // Removed reference to user, as protected route logic is gone.
 
     // The original code had a check for user?.type !== 'admin' and set showUnauthorized.
     // Since useProtectedRoute is removed, this logic is no longer applicable.
@@ -47,7 +47,7 @@ export default function AdminDashboard() {
               <h1 className="text-xl font-bold text-gray-900">Admin Dashboard</h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">Welcome, {user?.email}</span>
+              <span className="text-sm text-gray-600">Welcome, Admin</span>
               <button
                 onClick={handleLogout}
                 className="bg-red-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-700 transition-colors"
