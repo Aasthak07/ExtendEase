@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import toast from 'react-hot-toast';
-import { useProtectedRoute } from '@/components/AuthContext';
 
 const ViewExtension = () => {
     const { id } = useParams();
@@ -16,8 +15,6 @@ const ViewExtension = () => {
     const [reviews, setReviews] = useState([]);
     const [newReview, setNewReview] = useState({ rating: 0, comment: '' });
     const [user, setUser] = useState(null);
-
-    useProtectedRoute();
 
     useEffect(() => {
         const token = localStorage.getItem('token');

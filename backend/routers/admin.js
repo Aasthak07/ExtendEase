@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Admin = require('../models/Admin');
 const jwt = require('jsonwebtoken');
-const authMiddleware = require('../middleware/auth');
 
 
 // Admin login route
@@ -26,15 +25,6 @@ router.post('/login', async (req, res) => {
       token,
       user: { id: admin._id, email: admin.email }
     });
-  } catch (err) {
-    res.status(500).json({ message: 'Server error' });
-  }
-});
-
-// Protected route example
-router.get('/profile', authMiddleware, async (req, res) => {
-  try {
-    res.json({ admin: req.admin });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }

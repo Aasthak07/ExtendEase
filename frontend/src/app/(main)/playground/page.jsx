@@ -1,8 +1,6 @@
 import React from 'react';
-import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function PlaygroundPage() {
-  const { user } = useProtectedRoute();
 
   return (
     <div className="p-8">
