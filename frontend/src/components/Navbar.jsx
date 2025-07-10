@@ -35,7 +35,7 @@ const Navbar = () => {
   ];
 
   return (
-    <div className="w-full z-50 fixed top-0 left-0 right-0">
+    <div className="w-full z-10 fixed top-0 left-0 right-0">
       <nav className="bg-gradient-to-r from-black via-indigo-900 to-blue-900 text-white shadow-lg bg-opacity-95 backdrop-blur-md border-b border-white/10 animate-fade-in">
         <div className="px-4 py-4">
           <div className="flex items-center justify-between w-full">
