@@ -12,6 +12,8 @@ function getUserFromToken(token) {
     const decoded = jwtDecode(token);
     // If the token has an 'email' and 'id', but no explicit role, infer type
     // You can enhance this logic if you add a 'role' field in the backend
+    console.log(decoded);
+    
     return {
       id: decoded.id || decoded._id,
       email: decoded.email,
@@ -26,6 +28,7 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
     const storedToken = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
@@ -36,9 +39,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     if (token) {
       setUser(getUserFromToken(token));
+      setIsAuthenticated(true);
     } else {
       setUser(null);
+      setIsAuthenticated(false);
     }
+    console.log(getUserFromToken(token));
+    
   }, [token]);
 
   const login = useCallback((token) => {
@@ -53,7 +60,7 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // For page protection
-  const isAuthenticated = !!user;
+  // const isAuthenticated = !!user;
 
   if (loading) return null; // Or a loading spinner if you prefer
 
@@ -64,22 +71,4 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
-
-// Add this hook for page protection
-export function useProtectedRoute({ redirectTo = '/login', requireAdmin = false } = {}) {
-  const { isAuthenticated, user, loading } = useAuth();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!loading) {
-      if (!isAuthenticated) {
-        router.replace(redirectTo);
-      } else if (requireAdmin && user?.type !== 'admin') {
-        router.replace('/'); // or a 403 page
-      }
-    }
-  }, [isAuthenticated, loading, user, requireAdmin, router, redirectTo]);
-
-  return { isAuthenticated, user, loading };
-} 
+export const useAuth = () => useContext(AuthContext); 

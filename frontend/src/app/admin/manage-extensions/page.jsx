@@ -4,27 +4,10 @@ import Link from 'next/link';
 import { FaEdit, FaTrash, FaCheckCircle, FaTimesCircle, FaEye, FaPlus } from 'react-icons/fa';
 import { Input } from '@/components/ui/input';
 import { Search } from 'lucide-react';
-import { useProtectedRoute } from '@/components/AuthContext';
 import { useRouter } from 'next/navigation';
 
 export default function AdminManageExtensions() {
-  const { isAuthenticated, user, loading } = useProtectedRoute({ requireAdmin: true });
   const router = useRouter();
-  const [showUnauthorized, setShowUnauthorized] = React.useState(false);
-
-  React.useEffect(() => {
-    if (!loading && isAuthenticated && user?.type !== 'admin') {
-      setShowUnauthorized(true);
-      const timer = setTimeout(() => {
-        router.replace('/');
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, loading, user, router]);
-
-  if (loading) return <div>Loading...</div>;
-  if (showUnauthorized) return <div className="text-red-600 text-center mt-10 text-xl font-bold">Unauthorized: You do not have access to this page.</div>;
-
   const [extensions, setExtensions] = useState([]);
   const [search, setSearch] = useState('');
   const [categories] = useState([

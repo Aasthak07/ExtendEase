@@ -1,28 +1,28 @@
 'use client';
 
 import React from 'react';
-import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useProtectedRoute } from '@/components/AuthContext';
 
 export default function AdminDashboard() {
-  const { isAuthenticated, user, loading } = useProtectedRoute({ requireAdmin: true });
   const router = useRouter();
-  const [showUnauthorized, setShowUnauthorized] = React.useState(false);
 
   React.useEffect(() => {
-    if (!loading && isAuthenticated && user?.type !== 'admin') {
-      setShowUnauthorized(true);
-      const timer = setTimeout(() => {
-        router.replace('/');
-      }, 2000);
-      return () => clearTimeout(timer);
-    }
-  }, [isAuthenticated, loading, user, router]);
+    console.log(user);
 
-  if (loading) return <div>Loading...</div>;
-  if (showUnauthorized) return <div className="text-red-600 text-center mt-10 text-xl font-bold">Unauthorized: You do not have access to this page.</div>;
+    // The original code had a check for user?.type !== 'admin' and set showUnauthorized.
+    // Since useProtectedRoute is removed, this logic is no longer applicable.
+    // The original code also had a redirect timer.
+    // Since useProtectedRoute is removed, the redirect logic is also removed.
+  }, [router]); // Removed user and loading from dependencies
+
+  // The original code had loading state.
+  // Since useProtectedRoute is removed, loading is no longer available.
+  // The loading state is removed.
+
+  // The original code had showUnauthorized state.
+  // Since useProtectedRoute is removed, showUnauthorized is no longer available.
+  // The showUnauthorized state is removed.
 
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
