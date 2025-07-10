@@ -15,7 +15,7 @@ export default function ClientLayout({ children }) {
       <main className="flex-1">
         {children}
       </main>
-      {!hideLayout && <Footer />}
+      {/* {!hideLayout && <Footer />} */}
     </>
   );
 }
