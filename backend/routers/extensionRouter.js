@@ -7,19 +7,28 @@ const axios = require('axios');
 router.post('/', async (req, res) => {
   console.log('POST /extensions called with body:', req.body);
   try {
-    const { name, developer, publisher, logo, description, category, features, version, published, stats, identifier } = req.body;
-    const extension = new Extension({
+    const {
       name,
-      developer,
       publisher,
+      identifier,
+      version,
       logo,
       description,
-      category,
-      features,
-      version,
+      confirm,
       published,
-      stats,
+      user
+    } = req.body;
+
+    // Only require the fields provided by the frontend
+    const extension = new Extension({
+      name,
+      publisher,
       identifier,
+      version,
+      logo,
+      description,
+      published: published || false,
+      user: user || undefined
     });
     await extension.save();
     console.log('Extension saved successfully:', extension);

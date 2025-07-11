@@ -86,15 +86,17 @@ const RequestExtensionPage = () => {
     }
     setLoading(true);
     try {
-      await axios.put(`${API_BASE}/extensions/publish/${form.identifier}`, {
+      // Add published: false and user (if available) to the payload
+      const userId = localStorage.getItem('userId');
+      await axios.post(`${API_BASE}/extensions`, {
         ...form,
-        published: false,
+        published: false
       });
       setToast({ type: 'success', message: 'Extension submitted for approval!' });
       setForm({ name: '', publisher: '', identifier: '', version: '', logo: '', description: '', confirm: false });
       setLogoPreview('');
       setValidation({ loading: false, valid: false, error: '' });
-    } catch {
+    } catch (err) {
       setToast({ type: 'error', message: 'Submission failed. Try again.' });
     }
     setLoading(false);

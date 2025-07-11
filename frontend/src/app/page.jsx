@@ -35,6 +35,12 @@ export default function Page() {
         }
       `}</style>
       <div className="font-sans bg-gradient-to-br from-black via-indigo-900 to-blue-900 min-h-screen w-full flex items-start justify-start relative overflow-hidden">
+
+      {/* Navbar always visible at the top */}
+      <div className="fixed top-0 left-0 w-full z-30">
+        {/* Import and use your Navbar component here. Adjust the import if needed. */}
+        {require('../components/Navbar').default && React.createElement(require('../components/Navbar').default)}
+      </div>
       {/* Animated Background (Threads) */}
       <div className="absolute inset-0 z-0">   
         <Threads
