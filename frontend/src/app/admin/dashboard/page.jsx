@@ -29,7 +29,7 @@ export default function AdminDashboard() {
     localStorage.removeItem('adminUser');
     sessionStorage.removeItem('adminToken');
     sessionStorage.removeItem('adminUser');
-    router.push('/admin/login');
+    router.push('/admin-login');
   };
 
   return (
