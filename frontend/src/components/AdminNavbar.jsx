@@ -32,7 +32,7 @@ const AdminNavbar = () => {
     { href: "/admin/addextension", label: "Add Extension", icon: FaPlus },
     { href: "/admin/manage-extensions", label: "Manage Extensions", icon: FaList },
     { href: "/admin/BrowseExtension", label: "Browse Extensions", icon: FaSearch },
-    { href: "/admin/handle-extension", label: "Handle Requests", icon: FaCog },
+    { href: "/admin/handle-extension-request", label: "Handle Requests", icon: FaCog },
   ];
 
   return (

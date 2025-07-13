@@ -4,20 +4,32 @@ import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
 
 const AuthContext = createContext();
+const AdminAuthContext = createContext();
 
 // Helper to decode JWT and get user info
 function getUserFromToken(token) {
   if (!token) return null;
   try {
     const decoded = jwtDecode(token);
-    // If the token has an 'email' and 'id', but no explicit role, infer type
-    // You can enhance this logic if you add a 'role' field in the backend
-    console.log(decoded);
-    
     return {
-      id: decoded.id || decoded._id,
+      id: decoded._id,
       email: decoded.email,
-      type: decoded.id ? 'admin' : 'user', // If 'id' exists, it's admin (from admin login), else user
+      type: 'user',
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
+// Helper to decode JWT and get admin info
+function getAdminFromToken(token) {
+  if (!token) return null;
+  try {
+    const decoded = jwtDecode(token);
+    return {
+      id: decoded.id, // assuming admin token has 'id'
+      email: decoded.email,
+      type: 'admin',
     };
   } catch (e) {
     return null;
@@ -44,8 +56,6 @@ export const AuthProvider = ({ children }) => {
       setUser(null);
       setIsAuthenticated(false);
     }
-    console.log(getUserFromToken(token));
-    
   }, [token]);
 
   const login = useCallback((token) => {
@@ -59,10 +69,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   }, []);
 
-  // For page protection
-  // const isAuthenticated = !!user;
-
-  if (loading) return null; // Or a loading spinner if you prefer
+  if (loading) return null;
 
   return (
     <AuthContext.Provider value={{ user, token, login, logout, isAuthenticated, loading }}>
@@ -71,4 +78,47 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-export const useAuth = () => useContext(AuthContext); 
+export const AdminAuthProvider = ({ children }) => {
+  const [token, setToken] = useState(null);
+  const [admin, setAdmin] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const storedToken = typeof window !== 'undefined' ? localStorage.getItem('adminToken') : null;
+    setToken(storedToken);
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    if (token) {
+      setAdmin(getAdminFromToken(token));
+      setIsAuthenticated(true);
+    } else {
+      setAdmin(null);
+      setIsAuthenticated(false);
+    }
+  }, [token]);
+
+  const login = useCallback((token) => {
+    localStorage.setItem('adminToken', token);
+    setToken(token);
+  }, []);
+
+  const logout = useCallback(() => {
+    localStorage.removeItem('adminToken');
+    setToken(null);
+    setAdmin(null);
+  }, []);
+
+  if (loading) return null;
+
+  return (
+    <AdminAuthContext.Provider value={{ admin, token, login, logout, isAuthenticated, loading }}>
+      {children}
+    </AdminAuthContext.Provider>
+  );
+};
+
+export const useAuth = () => useContext(AuthContext);
+export const useAdminAuth = () => useContext(AdminAuthContext); 
