@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const HelpPage = () => {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-black via-indigo-900 to-blue-900 font-sans relative overflow-hidden">
+    <div className="min-h-screen w-full bg-white font-sans relative overflow-hidden">
       {/* Content Wrapper for z-index */}
       <div className="relative z-10">
         {/* Hero Section */}

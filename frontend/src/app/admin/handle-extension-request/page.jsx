@@ -44,7 +44,7 @@ const HandleExtensionRequestPage = () => {
     }, [toast]);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-black via-indigo-900 to-blue-900 py-12 px-4">
+        <div className="min-h-screen bg-white py-12 px-4">
             <div className="max-w-4xl mx-auto bg-black/30 rounded-2xl p-8 shadow-lg">
                 <h1 className="text-3xl font-bold text-white mb-8">Handle Extension Requests</h1>
                 {/* Toast */}
