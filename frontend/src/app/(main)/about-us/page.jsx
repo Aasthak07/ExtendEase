@@ -64,9 +64,8 @@ const AboutUs = () => {
                   </span>
                 </h1>
                 <p className="text-xl text-white max-w-4xl mx-auto leading-relaxed drop-shadow-md">
-                  Welcome to <strong className="text-indigo-200">ExtendEase</strong> – The VS Code Extensions Marketplace, a dedicated platform built 
-                  <strong className="text-indigo-200"> by developers, for developers</strong>. Our mission is simple: to empower 
-                  the global coding community with a centralized, community-driven space to discover, share, and manage 
+                  Welcome to <strong className="text-indigo-200">ExtendEase</strong> – The VS Code Extensions Marketplace built 
+                  <strong className="text-indigo-200">by developers, for developers</strong>. Discover, share, and manage 
                   Visual Studio Code extensions with ease.
                 </p>
               </div>
@@ -83,15 +82,11 @@ const AboutUs = () => {
                   transition: 'all 1s ease-out 0.2s'
                 }}>
                   <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 drop-shadow-lg">
-                    🚀 Our Vision
+                    <span className="text-indigo-200">Our</span> Vision
                   </h2>
                   <p className="text-lg text-white mb-6 leading-relaxed">
-                    We envision a world where every developer has instant access to the perfect tools that enhance their workflow. 
-                    In today's fast-paced development landscape, finding the right VS Code extensions shouldn't be a time-consuming 
-                    challenge—it should be an effortless discovery.
-                  </p>
-                  <p className="text-lg text-white mb-6 leading-relaxed">
-                    <strong className="text-indigo-200">ExtendEase</strong> is building the future of extension discovery by creating:
+                    We envision effortless extension discovery for every developer. 
+                    <strong className="text-indigo-200">ExtendEase</strong> is building the future by creating:
                   </p>
                   <ul className="space-y-3 text-white">
                     <li className="flex items-start">
@@ -149,7 +144,7 @@ const AboutUs = () => {
                     </span>
                   </div>
                   <p className="text-xl text-white bg-black/40 backdrop-blur-sm border border-indigo-500/30 rounded-2xl shadow-lg px-8 py-6 leading-relaxed font-medium">
-                    <span className="text-indigo-200 font-semibold">ExtendEase</span> is your go-to platform for discovering and managing top Visual Studio Code extensions. Whether you're a <span className="font-semibold text-indigo-200">beginner</span> or a <span className="font-semibold text-indigo-200">pro</span>, we help you find the right tools by organizing extensions into domains like <span className="font-semibold text-indigo-200">Web Development</span>, <span className="font-semibold text-indigo-200">AI/ML</span>, and <span className="font-semibold text-indigo-200">UI/UX</span>. With real use cases, smart filters, and clear descriptions, ExtendEase lets you spend less time searching and more time building.
+                    <span className="text-indigo-200 font-semibold">ExtendEase</span> helps you discover and manage VS Code extensions with smart filters and clear organization. Spend less time searching, more time building.
                   </p>
                 </div>
               </div>

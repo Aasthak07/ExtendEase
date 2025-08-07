@@ -111,23 +111,23 @@ const RequestExtensionPage = () => {
   }, [toast]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-indigo-900 to-blue-900 py-12 px-4">
-      <div className="max-w-3xl mx-auto bg-black/30 rounded-2xl p-8 shadow-lg">
-        <h1 className="text-3xl font-bold text-white mb-8">Request Extension</h1>
+    <div className="min-h-screen bg-white pt-16 py-12 px-4">
+      <div className="max-w-3xl mx-auto rounded-2xl p-8 shadow-lg">
+        <h1 className="text-3xl font-bold mb-8">Request Extension</h1>
         {/* Toast */}
         {toast.message && (
-          <div className={`mb-4 px-4 py-2 rounded text-white font-semibold ${toast.type === 'success' ? 'bg-green-600' : 'bg-red-600'}`}>
+          <div className={`mb-4 px-4 py-2 rounded font-semibold ${toast.type === 'success' ? 'bg-green-600 text-white' : 'bg-red-600 text-white'}`}>
             {toast.message}
           </div>
         )}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Extension Name */}
           <div>
-            <label className="block text-gray-200 mb-1">Extension Name</label>
+            <label className="block mb-1">Extension Name</label>
             <input
               type="text"
               name="name"
-              className="w-full rounded bg-black/40 border border-indigo-500 text-white px-3 py-2"
+              className="w-full rounded border px-3 py-2"
               value={form.name}
               onChange={handleChange}
               required
@@ -135,11 +135,11 @@ const RequestExtensionPage = () => {
           </div>
           {/* Publisher Name */}
           <div>
-            <label className="block text-gray-200 mb-1">Publisher Name</label>
+            <label className="block mb-1">Publisher Name</label>
             <input
               type="text"
               name="publisher"
-              className="w-full rounded bg-black/40 border border-indigo-500 text-white px-3 py-2"
+              className="w-full rounded border px-3 py-2"
               value={form.publisher}
               onChange={handleChange}
               required
@@ -147,12 +147,12 @@ const RequestExtensionPage = () => {
           </div>
           {/* Extension Identifier */}
           <div>
-            <label className="block text-gray-200 mb-1">Extension Identifier <span className="text-xs text-gray-400">(e.g. es7-react-js-snippets)</span></label>
+            <label className="block mb-1">Extension Identifier <span className="text-xs text-gray-400">(e.g. es7-react-js-snippets)</span></label>
             <div className="flex gap-2">
               <input
                 type="text"
                 name="identifier"
-                className="flex-1 rounded bg-black/40 border border-indigo-500 text-white px-3 py-2"
+                className="flex-1 rounded border px-3 py-2"
                 value={form.identifier}
                 onChange={handleChange}
                 required
@@ -188,11 +188,11 @@ const RequestExtensionPage = () => {
           </div>
           {/* Version */}
           <div>
-            <label className="block text-gray-200 mb-1">Version</label>
+            <label className="block mb-1">Version</label>
             <input
               type="text"
               name="version"
-              className="w-full rounded bg-black/40 border border-indigo-500 text-white px-3 py-2"
+              className="w-full rounded border px-3 py-2"
               value={form.version}
               onChange={handleChange}
               required
@@ -200,11 +200,11 @@ const RequestExtensionPage = () => {
           </div>
           {/* Logo Upload */}
           <div>
-            <label className="block text-gray-200 mb-1">Logo Upload</label>
+            <label className="block mb-1">Logo Upload</label>
             <input
               type="file"
               accept="image/*"
-              className="w-full text-white"
+              className="w-full"
               onChange={handleLogoUpload}
             />
             {logoPreview && (
@@ -215,10 +215,10 @@ const RequestExtensionPage = () => {
           </div>
           {/* Description */}
           <div>
-            <label className="block text-gray-200 mb-1">Description</label>
+            <label className="block mb-1">Description</label>
             <textarea
               name="description"
-              className="w-full rounded bg-black/40 border border-indigo-500 text-white px-3 py-2 min-h-[60px]"
+              className="w-full rounded border px-3 py-2 min-h-[60px]"
               value={form.description}
               onChange={handleChange}
               required
@@ -234,21 +234,21 @@ const RequestExtensionPage = () => {
               className="mr-2 accent-indigo-600"
               required
             />
-            <span className="text-gray-200">I confirm the above information is accurate</span>
+            <span>I confirm the above information is accurate</span>
           </div>
           {/* Preview Card */}
           {validation.valid && form.name && form.publisher && form.identifier && form.version && form.logo && form.description && (
             <div className="mt-6">
-              <div className="bg-black/40 border border-indigo-500 rounded-xl p-4 flex items-center gap-4 shadow">
+              <div className="border rounded-xl p-4 flex items-center gap-4 shadow">
                 <img src={logoPreview} alt="Logo" className="h-16 w-16 rounded" />
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="text-xl font-bold text-white">{form.name}</span>
+                    <span className="text-xl font-bold">{form.name}</span>
                     <span className="bg-indigo-600 text-white text-xs px-2 py-1 rounded">{form.version}</span>
                   </div>
-                  <div className="text-gray-300 text-sm">{form.description}</div>
-                  <div className="text-gray-400 text-xs mt-1">Publisher: {form.publisher}</div>
-                  <div className="text-gray-400 text-xs">Identifier: {form.identifier}</div>
+                  <div className="text-gray-700 text-sm">{form.description}</div>
+                  <div className="text-gray-500 text-xs mt-1">Publisher: {form.publisher}</div>
+                  <div className="text-gray-500 text-xs">Identifier: {form.identifier}</div>
                 </div>
               </div>
             </div>
@@ -264,12 +264,12 @@ const RequestExtensionPage = () => {
         </form>
       </div>
       {/* Pending Submissions Table */}
-      <div className="max-w-3xl mx-auto mt-12 bg-black/30 rounded-2xl p-6 shadow-lg">
-        <h2 className="text-xl font-bold text-white mb-4">Pending Submissions</h2>
+      <div className="max-w-3xl mx-auto mt-12 rounded-2xl p-6 shadow-lg">
+        <h2 className="text-xl font-bold mb-4">Pending Submissions</h2>
         {pending.length === 0 ? (
-          <div className="text-gray-400">No pending submissions.</div>
+          <div className="text-gray-500">No pending submissions.</div>
         ) : (
-          <table className="w-full text-left text-gray-200">
+          <table className="w-full text-left">
             <thead>
               <tr>
                 <th className="py-2">Name</th>
@@ -279,7 +279,7 @@ const RequestExtensionPage = () => {
             </thead>
             <tbody>
               {pending.map(ext => (
-                <tr key={ext._id} className="border-t border-indigo-900">
+                <tr key={ext._id} className="border-t">
                   <td className="py-2">{ext.name}</td>
                   <td className="py-2">{ext.version}</td>
                   <td className="py-2">

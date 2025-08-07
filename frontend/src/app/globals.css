@@ -2,7 +2,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark (&:is(.dark *));
 
 html, body {
   font-family: 'Baloo 2', cursive, sans-serif;
@@ -123,4 +123,4 @@ html, body {
     @apply bg-background text-foreground;
   }
 }
-
+ */
