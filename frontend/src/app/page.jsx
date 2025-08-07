@@ -206,7 +206,7 @@ export default function Page() {
         <Link href="/browse-extensions" className="inline-block px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold text-lg shadow-lg hover:bg-indigo-700 transition mb-4">
           Browse Extensions
         </Link>
-        <Link href="/add-extension" className="inline-block px-8 py-3 border-2 border-indigo-400 text-indigo-200 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition">
+        <Link href="/user/request-extension" className="inline-block px-8 py-3 border-2 border-indigo-400 text-indigo-200 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition">
           Add Extension
         </Link>
       </div>
