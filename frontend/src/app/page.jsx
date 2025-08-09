@@ -350,62 +350,6 @@ export default function Page() {
                   key={index}
                   className="bg-indigo-900/20 backdrop-blur-sm border border-indigo-500/20 rounded-xl p-5 hover:shadow-lg hover:shadow-indigo-500/10 transition-all duration-300"
                 >
-<<<<<<< HEAD
-                  &nbsp;
-                </span>
-                <span className="text-indigo-200 inline-block">
-                  {'Code'.split('').map((letter, index) => (
-                    <span
-                      key={`indigo3-${index}`}
-                      className="inline-block"
-                      style={{
-                        animation: `fadeInLetter 0.4s ease-out ${(index + 27) * 0.06}s forwards`,
-                        opacity: 0,
-                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
-                      }}
-                    >
-                      {letter}
-                    </span>
-                  ))}
-                </span>
-                <span 
-                  className="inline-block"
-                  style={{
-                    marginLeft: '0.01em',
-                    marginRight: '0.01em'
-                  }}
-                >
-                  &nbsp;
-                </span>
-                <span className="text-indigo-200 inline-block">
-                  {'Extensions'.split('').map((letter, index) => (
-                    <span
-                      key={`indigo4-${index}`}
-                      className="inline-block"
-                      style={{
-                        animation: `fadeInLetter 0.4s ease-out ${(index + 31) * 0.06}s forwards`,
-                        opacity: 0,
-                        textShadow: letter === ' ' ? 'none' : '0 0 10px rgba(147,51,234,0.8)'
-                      }}
-                    >
-                      {letter}
-                    </span>
-                  ))}
-                </span>
-              </div>
-            </>
-          )}
-        </h1>
-        <p className="text-base sm:text-lg text-gray-200 mb-8 drop-shadow-md leading-relaxed">
-          ExtendEase is your go-to platform for finding, reviewing, and managing the best Visual Studio Code extensions for your workflow.
-        </p>
-        <Link href="/browse-extensions" className="inline-block px-8 py-3 bg-indigo-600 text-white rounded-full font-semibold text-lg shadow-lg hover:bg-indigo-700 transition mb-4">
-          Browse Extensions
-        </Link>
-        <Link href="/user/request-extension" className="inline-block px-8 py-3 border-2 border-indigo-400 text-indigo-200 font-semibold rounded-full hover:bg-indigo-600 hover:text-white transition">
-          Add Extension
-        </Link>
-=======
                   <h3 className="text-lg font-semibold text-white">{ext.name}</h3>
                   <p className="text-sm text-indigo-300 mb-3">{ext.author}</p>
                   <p className="text-gray-300 text-sm mb-4">{ext.desc}</p>
@@ -448,7 +392,6 @@ export default function Page() {
             </div>
           </section>
         </div>
->>>>>>> a1b165f3e06bf94e2035a8dc6cc1b81eb850ce7c
       </div>
     </>
   );
