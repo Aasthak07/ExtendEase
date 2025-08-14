@@ -384,7 +384,7 @@ export default function Page() {
                 Browse All Extensions
               </Link>
               <Link
-                href="/register"
+                href="/publisher-registration"
                 className="px-6 py-3 border border-indigo-400 text-indigo-200 hover:bg-indigo-600 hover:text-white font-semibold rounded-full transition-all duration-300 shadow hover:shadow-indigo-400/50"
               >
                 Create Publisher Account

@@ -198,6 +198,17 @@ export default function AdminDashboard() {
             </div>
           </div>
         </div>
+
+        <div className="p-8">
+          <h1 className="text-3xl font-bold mb-6">Admin Dashboard</h1>
+          <Link
+            href="/admin/pending-Publishers"
+            className="inline-block px-6 py-3 bg-indigo-600 text-white rounded hover:bg-indigo-700 transition"
+          >
+            View Pending Publisher Registrations
+          </Link>
+          {/* ...other dashboard content... */}
+        </div>
       </main>
     </div>
   );

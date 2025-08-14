@@ -5,6 +5,7 @@ const cors = require('cors');
 const extensionRouter = require('./routers/extensionRouter');
 const ratingRouter = require('./routers/ratingRouter');
 const adminHandleRequestRouter = require('./routers/adminHandleRequest');
+const publisherRouter = require('./routers/publisher');
 require('./connection'); // Import database connection
 
 //creating new express app
@@ -30,6 +31,7 @@ app.use('/admin', adminRouter);
 app.use('/admin', adminHandleRequestRouter);
 app.use('/extensions', extensionRouter);
 app.use('/rating', ratingRouter);
+app.use('/publisher', publisherRouter);
 
 //routes or endpoints
 app.get('/', (req, res) => {
