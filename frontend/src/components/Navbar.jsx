@@ -28,6 +28,7 @@ const Navbar = () => {
   };
 
   const navLinks = [
+    { href: "/", label: "Home" },
     { href: "/browse-extensions", label: "All Extensions" },
     { href: "#", label: "Featured" },
     { href: "/about-us", label: "About" },

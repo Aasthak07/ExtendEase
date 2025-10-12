@@ -56,27 +56,14 @@ export default function SignupPage() {
   });
 
   return (
-    <div className="relative h- flex items-center justify-center my-8 mx-8">
-      {/* Background */}
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center animate-pulse"
-        style={{
-          backgroundImage: `url('/abstract.jpg')`,
-          filter: 'blur(8px)',
-        }}
-      ></div>
-
-      {/* Glass overlay (optional) */}
-      <div className="absolute inset-0 bg-white/10 backdrop-blur-[6px] z-0" />
-
+    <div className="relative min-h-screen flex items-center justify-center pt-40 pb-12 overflow-y-auto bg-gradient-to-br from-white via-indigo-50 to-blue-100">
       {/* Form Container */}
       <div className="relative z-10 w-full max-w-xl p-8 sm:p-10 bg-white rounded-2xl shadow-xl">
-        {/* Logo (top-left inside box) */}
-        <div className="mb-6 flex items-center">
-          <img src="/Final Logo.ico" alt="Logo" className="h-24 w-26 mr-3" />
+        {/* Logo and Heading (same style as login page) */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold text-gray-800">Account Sign-Up</h1>
+          <img src="/Final Logo.ico" alt="Logo" className="h-16 w-auto" />
         </div>
-
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">Account Sign-Up</h1>
         <p className="text-sm text-indigo-500 mb-6">Create an online account with just a few clicks.</p>
 
         {error && (

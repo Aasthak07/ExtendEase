@@ -3,11 +3,12 @@ import './globals.css';
 import { AuthProvider } from '@/components/AuthContext';
 import Footer from '@/components/Footer';
 import Navbar from '@/components/Navbar';
+
 export const metadata = {
   title: "VS Code Extensions",
   description: "Browse and manage Visual Studio Code extensions",
   icons: {
-    icon: "/sq.ico", // Path to your logo in the public folder
+    icon: "/sq.ico",
     shortcut: "/sq.ico",
     apple: "/whiteLogo.png",
     other: [
@@ -23,9 +24,8 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen flex flex-col bg-white">
         <Toaster position='top-right' />
         <AuthProvider>
-          {/* Main Content */}
+          <Navbar />
           <main className="flex-1 relative z-10 min-h-screen">
-            <Navbar />
             {children}
           </main>
           <Footer />

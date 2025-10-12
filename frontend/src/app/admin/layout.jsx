@@ -1,10 +1,11 @@
-'use client';
+"use client";
 import { Toaster } from 'react-hot-toast';
 import { AdminAuthProvider, useAdminAuth } from '@/components/AuthContext';
-import AdminNavbar from '@/components/AdminNavbar';
-
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import '../globals.css';
+
+// No Navbar or Footer here!
 
 function AdminAuthGate({ children }) {
   const { isAuthenticated, loading } = useAdminAuth();
@@ -15,14 +16,13 @@ function AdminAuthGate({ children }) {
       if (!loading && !isAuthenticated) {
         router.replace('/admin-login');
       }
-    }, 3000); // 3 seconds delay
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, [isAuthenticated, loading, router]);
 
   if (loading || !isAuthenticated) {
-    // Optionally, show a loading spinner or nothing while checking auth
-    return null;
+    return null; // Or a spinner
   }
 
   return <>{children}</>;
@@ -30,17 +30,15 @@ function AdminAuthGate({ children }) {
 
 export default function AdminRootLayout({ children }) {
   return (
-    <>
-      <Toaster position='top-right' />
-      <AdminAuthProvider>
-        {/* Removed blue gradient overlays */}
-        {/* Main Content */}
-        <AdminNavbar />
-        <main className="flex-1 py-4 relative z-10 min-h-screen bg-white">
-          <AdminAuthGate>{children}</AdminAuthGate>
-        </main>
-        
-      </AdminAuthProvider>
-    </>
+    <html lang="en" className="bg-white">
+      <body className="min-h-screen flex flex-col bg-white">
+        <Toaster position='top-right' />
+        <AdminAuthProvider>
+          <main className="flex-1 py-4 relative z-10 min-h-screen bg-white">
+            <AdminAuthGate>{children}</AdminAuthGate>
+          </main>
+        </AdminAuthProvider>
+      </body>
+    </html>
   );
-} 
+}
