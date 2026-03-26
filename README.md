@@ -1,4 +1,4 @@
-# ExtendEase - Admin Login System
+# ExtendEase 
 
 This project includes a complete admin login system with frontend and backend integration.
 
