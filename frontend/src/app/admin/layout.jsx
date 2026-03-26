@@ -41,4 +41,4 @@ export default function AdminRootLayout({ children }) {
       </body>
     </html>
   );
-}
+} 

@@ -30,7 +30,7 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/browse-extensions", label: "All Extensions" },
-    { href: "#", label: "Featured" },
+    { href: "/features", label: "Features" },
     { href: "/about-us", label: "About" },
     { href: "/help", label: "Help" },
   ];
