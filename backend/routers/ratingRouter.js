@@ -15,11 +15,16 @@ router.post('/add', async (req, res) => {
         if (!userId) {
             const authHeader = req.headers.authorization || req.headers.Authorization;
             if (authHeader && authHeader.startsWith('Bearer ')) {
+require('dotenv').config();
+// ...
                 const token = authHeader.split(' ')[1];
                 try {
-                    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'secretkey');
+                    const decoded = jwt.verify(token, process.env.JWT_SECRET);
                     userId = decoded.id || decoded._id;
+                    console.log('Token verified for user:', userId);
                 } catch (err) {
+                    console.error('JWT Verification Error:', err.message);
+                    console.error('Using Secret:', process.env.JWT_SECRET ? 'Defined' : 'UNDEFINED');
                     return res.status(401).json({ error: 'Invalid token' });
                 }
             } else {

@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const UserRouter = require('./routers/userRouter'); //importing user router
 const adminRouter = require('./routers/admin'); // or './routes/admin' if that's your folder name

@@ -1,7 +1,6 @@
 const express = require('express');
 const Model = require('../models/userModel'); //importing user model
 const jwt = require('jsonwebtoken'); //importing jsonwebtoken
-require('dotenv').config(); //importing dotenv
 
 const router = express.Router();
 
