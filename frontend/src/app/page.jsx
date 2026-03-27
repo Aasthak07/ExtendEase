@@ -102,7 +102,7 @@ export default function Page() {
                       opacity: 0
                     }}
                   >
-                    
+
                   </span>
                   {'&'.split('').map((letter, index) => (
                     <span
@@ -131,12 +131,12 @@ export default function Page() {
                       {letter}
                     </span>
                   ))}
-                  
-                 
-                    
-                    
-                    
-        
+
+
+
+
+
+
                 </div>
 
                 <div>
@@ -237,7 +237,7 @@ export default function Page() {
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
               {categories.map((category, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-white/80 hover:bg-blue-50 backdrop-blur-sm border border-gray-200 hover:border-blue-300 rounded-lg p-5 flex items-center gap-3 transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg"
                 >
@@ -258,7 +258,7 @@ export default function Page() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {popularExtensions.map((ext, index) => (
-                <div 
+                <div
                   key={index}
                   className="bg-white/90 backdrop-blur-sm border border-gray-200 rounded-xl p-5 hover:shadow-xl hover:shadow-blue-100 transition-all duration-300 hover:border-blue-300"
                 >

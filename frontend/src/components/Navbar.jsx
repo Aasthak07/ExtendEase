@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FaSearch, FaUserCircle, FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from './AuthContext';
 
@@ -12,6 +12,7 @@ const Navbar = () => {
   const [showSearch, setShowSearch] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -51,16 +52,26 @@ const Navbar = () => {
             </Link>
 
             {/* Navigation Links (centered and grow) */}
-            <div className="hidden md:flex flex-1 items-center justify-center space-x-4">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="hover:text-gray-300 transition-colors duration-200 text-xs font-medium hover:scale-105 transform"
-                >
-                  {link.label}
-                </Link>
-              ))}
+            <div className="hidden md:flex flex-1 items-center justify-center space-x-6">
+              {navLinks.map((link) => {
+                const isActive = pathname === link.href;
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className={`transition-all duration-200 text-xs font-medium transform relative py-1 ${
+                      isActive 
+                        ? 'text-white scale-110' 
+                        : 'text-gray-400 hover:text-white hover:scale-105'
+                    }`}
+                  >
+                    {link.label}
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-blue-500 rounded-full animate-pulse"></span>
+                    )}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Search + Auth (right) */}
@@ -147,16 +158,23 @@ const Navbar = () => {
           {isMobileMenuOpen && (
             <div className="md:hidden">
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gradient-to-b from-black via-indigo-900 to-blue-900 mt-2 bg-opacity-95 backdrop-blur-md border-b border-white/10 animate-slide-down">
-                {navLinks.map((link) => (
-                                  <Link
-                  key={link.label}
-                  href={link.href}
-                  className="block px-3 py-2 rounded-md text-base font-medium hover:text-gray-300 hover:bg-indigo-300/20 transition-colors duration-200 hover:scale-105 transform"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                    {link.label}
-                  </Link>
-                ))}
+                {navLinks.map((link) => {
+                  const isActive = pathname === link.href;
+                  return (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      className={`block px-3 py-2 rounded-md text-base font-medium transition-all duration-200 transform ${
+                        isActive 
+                          ? 'bg-blue-600/30 text-white border-l-4 border-blue-500 pl-2' 
+                          : 'text-gray-300 hover:text-white hover:bg-indigo-300/20 hover:pl-4'
+                      }`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                })}
                 <button className="w-full text-left px-3 py-2 rounded-md text-base font-medium bg-gray-800/50 hover:bg-gray-700/50 transition-colors duration-200 hover:scale-105 transform">
                   Free Visual Studio
                 </button>

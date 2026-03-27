@@ -80,19 +80,19 @@ const Browse = () => {
   const renderCard = (ext) => {
     // The outermost clickable area is the Card, not the Link
     const cardContent = (
-      <Card className="group transition-all duration-200 overflow-hidden bg-white/10 backdrop-blur-md border border-white/20 shadow-lg hover:shadow-xl hover:bg-white/15 hover:border-indigo-400/50 h-[400px] flex flex-col">
+      <Card className="group transition-all duration-300 overflow-hidden bg-white/90 backdrop-blur-sm border border-gray-200 shadow-sm hover:shadow-xl hover:shadow-blue-100 hover:border-blue-300 h-[400px] flex flex-col">
         <CardHeader className="pb-4">
           <div className="flex items-start gap-4">
             <Avatar className="h-12 w-12 rounded-lg">
               <AvatarImage src={ext.logo || "/placeholder.svg"} alt={`${ext.name} logo`} />
 
-              <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 text-white font-semibold">
+              <AvatarFallback className="rounded-lg bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-800 font-semibold">
                 {ext.name ? ext.name.charAt(0).toUpperCase() : 'E'}
               </AvatarFallback>
             </Avatar>
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2">
-                <CardTitle className="text-lg leading-tight text-white group-hover:text-indigo-300 transition-colors font-semibold">
+                <CardTitle className="text-lg leading-tight text-gray-800 group-hover:text-blue-600 transition-colors font-semibold">
                   {ext.name || 'Unnamed Extension'}
                 </CardTitle>
                 {ext.published ? (
@@ -101,51 +101,53 @@ const Browse = () => {
                   <XCircle className="h-5 w-5 text-red-500 flex-shrink-0" />
                 )}
               </div>
-              <div className="flex items-center gap-1 text-sm text-gray-300 mt-1">
-                <User className="h-3 w-3 text-gray-300" />
+              <div className="flex items-center gap-1 text-sm text-gray-500 mt-1">
+                <User className="h-3 w-3 text-gray-400" />
                 {ext.developer || 'Unknown Developer'}
               </div>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="pt-0">
-          <CardDescription className="text-sm mb-4 line-clamp-2 text-gray-200">{ext.description}</CardDescription>
+        <CardContent className="pt-0 flex flex-col flex-1">
+          <CardDescription className="text-sm mb-4 line-clamp-2 text-gray-600">{ext.description}</CardDescription>
 
           <div className="flex flex-wrap gap-2 mb-4">
-            <Badge variant="secondary" className="text-xs bg-gray-700 text-white border-gray-600">
+            <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-700 border-gray-200 hover:bg-gray-200">
               v{ext.version}
             </Badge>
-            <Badge variant={ext.published ? "default" : "destructive"} className={`text-xs ${ext.published ? "bg-green-600 text-white" : "bg-red-600 text-white"}`}>
+            <Badge variant={ext.published ? "default" : "destructive"} className={`text-xs ${ext.published ? "bg-green-100 text-green-700 hover:bg-green-200" : "bg-red-100 text-red-700 hover:bg-red-200"}`}>
               {ext.published ? "Published" : "Unpublished"}
             </Badge>
           </div>
 
           {ext.features && ext.features.length > 0 && (
             <div className="mb-4">
-              <h4 className="text-sm font-medium mb-2 text-white">Features:</h4>
+              <h4 className="text-sm font-medium mb-2 text-gray-700">Features:</h4>
               <div className="flex flex-wrap gap-1">
                 {ext.features.slice(0, 3).map((feature, idx) => (
-                  <Badge key={idx} variant="outline" className="text-xs bg-indigo-600/20 text-indigo-200 border-indigo-400/30">
+                  <Badge key={idx} variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
                     {feature}
                   </Badge>
                 ))}
                 {ext.features.length > 3 && (
-                  <Badge variant="outline" className="text-xs bg-indigo-600/20 text-indigo-200 border-indigo-400/30">
+                  <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-200">
                     +{ext.features.length - 3} more
                   </Badge>
                 )}
               </div>
             </div>
           )}
+          
+          <div className="mt-auto"></div>
 
           {ext.stats && (
-            <div className="flex items-center justify-between text-sm text-gray-300">
+            <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-100 mt-4">
               <div className="flex items-center gap-1">
-                <Download className="h-4 w-4 text-gray-300" />
+                <Download className="h-4 w-4 text-gray-500" />
                 {formatNumber(ext.stats.downloads)}
               </div>
               <div className="flex items-center gap-1">
-                <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                <Star className="h-4 w-4 fill-yellow-400 text-yellow-500" />
                 {typeof ext.stats.rating === "number" ? ext.stats.rating.toFixed(1) : "N/A"}
               </div>
             </div>
@@ -174,16 +176,16 @@ const Browse = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-indigo-900 to-blue-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-white text-gray-800">
       <div className="container mx-auto px-4 py-8">
-        <div className="mb-12 text-center">
-          <h1 className="text-5xl font-extrabold mb-4 text-white leading-tight tracking-tight">
+        <div className="mb-12 text-center mt-8">
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-4 text-gray-800 leading-tight tracking-tight">
             Extension 
-            <span className="text-indigo-200 drop-shadow-lg">
-              Marketplace
+            <span className="text-blue-600 drop-shadow-sm">
+              &nbsp;Marketplace
             </span>
           </h1>
-          <p className="text-gray-300 text-xl max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-600 text-lg sm:text-xl max-w-2xl mx-auto leading-relaxed">
             Discover and install powerful extensions to enhance your development workflow
           </p>
         </div>
@@ -195,26 +197,26 @@ const Browse = () => {
               placeholder="Search extensions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 bg-white/10 border-white/20 text-white placeholder-gray-300 focus:border-indigo-400 focus:ring-indigo-400"
+              className="pl-10 bg-white/80 border-gray-300 text-gray-800 placeholder-gray-500 focus:border-blue-500 focus:ring-blue-500 shadow-sm"
             />
           </div>
           <Select value={sortBy} onValueChange={setSortBy}>
-            <SelectTrigger className="w-48 bg-white/10 border-white/20 text-white focus:border-indigo-400">
-              <Filter className="h-4 w-4 mr-2 text-gray-300" />
-              <SelectValue placeholder="Sort by" className="text-white" />
+            <SelectTrigger className="w-full sm:w-48 bg-white/80 border-gray-300 text-gray-800 focus:border-blue-500 shadow-sm">
+              <Filter className="h-4 w-4 mr-2 text-gray-500" />
+              <SelectValue placeholder="Sort by" />
             </SelectTrigger>
-            <SelectContent className="bg-gray-800 border-gray-600">
-              <SelectItem value="name" className="text-white hover:bg-gray-700">Name</SelectItem>
-              <SelectItem value="downloads" className="text-white hover:bg-gray-700">Downloads</SelectItem>
-              <SelectItem value="rating" className="text-white hover:bg-gray-700">Rating</SelectItem>
+            <SelectContent className="bg-white border-gray-200">
+              <SelectItem value="name" className="text-gray-800 hover:bg-gray-100 cursor-pointer">Name</SelectItem>
+              <SelectItem value="downloads" className="text-gray-800 hover:bg-gray-100 cursor-pointer">Downloads</SelectItem>
+              <SelectItem value="rating" className="text-gray-800 hover:bg-gray-100 cursor-pointer">Rating</SelectItem>
             </SelectContent>
           </Select>
-          <div className="flex border border-white/20 rounded-lg p-1 bg-white/5">
+          <div className="flex border border-gray-300 rounded-lg p-1 bg-white/80 shadow-sm">
             <Button
               variant={viewMode === "grid" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("grid")}
-              className={`h-8 w-8 p-0 ${viewMode === "grid" ? "bg-indigo-600 hover:bg-indigo-700" : "text-white hover:bg-white/10"}`}
+              className={`h-8 w-8 p-0 ${viewMode === "grid" ? "bg-blue-600 hover:bg-blue-700 text-white" : "text-gray-600 hover:bg-gray-100"}`}
             >
               <Grid3X3 className="h-4 w-4" />
             </Button>
@@ -222,7 +224,7 @@ const Browse = () => {
               variant={viewMode === "list" ? "default" : "ghost"}
               size="sm"
               onClick={() => setViewMode("list")}
-              className={`h-8 w-8 p-0 ${viewMode === "list" ? "bg-indigo-600 hover:bg-indigo-700" : "text-white hover:bg-white/10"}`}
+              className={`h-8 w-8 p-0 ${viewMode === "list" ? "bg-blue-600 hover:bg-blue-700 text-white" : "text-gray-600 hover:bg-gray-100"}`}
             >
               <List className="h-4 w-4" />
             </Button>
@@ -230,7 +232,7 @@ const Browse = () => {
         </div>
 
         <div className="mb-6">
-          <p className="text-gray-300 text-lg">
+          <p className="text-gray-600 text-lg font-medium">
             {filteredExtensions.length} extension{filteredExtensions.length !== 1 ? "s" : ""} found
           </p>
         </div>
@@ -244,7 +246,7 @@ const Browse = () => {
           }, {})
         ).map(([category, extList]) => (
           <div key={category} className="mb-10">
-            <h2 className="text-2xl font-semibold mb-4 text-indigo-200">{category}</h2>
+            <h2 className="text-2xl font-bold mb-6 text-gray-800 border-b border-gray-200 pb-2">{category}</h2>
             <div
               className={`grid gap-6 ${viewMode === "grid" ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3" : "grid-cols-1"
                 }`}
@@ -253,9 +255,17 @@ const Browse = () => {
             </div>
           </div>
         ))}
+        
+        {filteredExtensions.length === 0 && !isLoading && (
+          <div className="text-center py-20 bg-white/50 rounded-xl border border-gray-200">
+            <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">No extensions found</h3>
+            <p className="text-gray-500">Try adjusting your search query or filters.</p>
+          </div>
+        )}
       </div>
     </div>
-    );
+  );
 };
 
 export default Browse;

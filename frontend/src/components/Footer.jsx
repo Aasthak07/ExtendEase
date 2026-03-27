@@ -12,7 +12,7 @@ const Footer = () => {
           <div className="md:col-span-2">
             <h3 className="text-xl font-bold text-gray-800 mb-3">ExtendEase</h3>
             <p className="text-gray-600 text-sm">
-              The ultimate marketplace for VS Code extensions. Discover, manage, 
+              The ultimate marketplace for VS Code extensions. Discover, manage,
               and publish extensions to enhance your development workflow.
             </p>
             <div className="flex space-x-4 mt-4">
