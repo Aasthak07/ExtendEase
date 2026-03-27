@@ -20,8 +20,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="bg-white">
-      <body className="min-h-screen flex flex-col bg-white">
+    <html lang="en">
+      <body className="min-h-screen flex flex-col">
         <Toaster position='top-right' />
         <AuthProvider>
           <Navbar />
