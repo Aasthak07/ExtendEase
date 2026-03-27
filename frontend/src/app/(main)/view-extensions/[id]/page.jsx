@@ -51,7 +51,7 @@ const ViewExtension = () => {
 
     const handleSubmitReview = async (e) => {
         e.preventDefault();
-        
+
         if (!userToken) {
             toast.error('Please login to submit a review');
             return;
@@ -70,7 +70,7 @@ const ViewExtension = () => {
         try {
             const response = await fetch('http://localhost:5000/rating/add', {
                 method: 'POST',
-                headers: { 
+                headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${userToken}`
                 },
@@ -102,7 +102,7 @@ const ViewExtension = () => {
             alert('This extension cannot be installed directly. Please contact the developer.');
             return;
         }
-        
+
         const vsCodeUrl = `vscode:extension/${extension.identifier.trim()}`;
         setPendingVsCodeUrl(vsCodeUrl);
         setIsInstallModalOpen(true);
@@ -121,7 +121,7 @@ const ViewExtension = () => {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-white text-gray-800 pb-20">
-            <ConfirmationModal 
+            <ConfirmationModal
                 isOpen={isInstallModalOpen}
                 onClose={() => setIsInstallModalOpen(false)}
                 onConfirm={confirmInstallation}
@@ -130,9 +130,9 @@ const ViewExtension = () => {
             />
 
             <div className="mx-auto max-w-6xl px-4 py-8 mt-12">
-                <Button 
-                    variant="ghost" 
-                    className="mb-8 text-gray-600 hover:text-blue-600 hover:bg-white/50 backdrop-blur-sm transition-all" 
+                <Button
+                    variant="ghost"
+                    className="mb-8 text-gray-600 hover:text-blue-600 hover:bg-white/50 backdrop-blur-sm transition-all"
                     onClick={() => router.back()}
                 >
                     <ArrowLeft className="mr-2 h-4 w-4" /> Back to Marketplace
@@ -217,18 +217,18 @@ const ViewExtension = () => {
                                 <h3 className="mb-4 text-lg font-bold text-gray-700">Write a Review</h3>
                                 <form onSubmit={handleSubmitReview}>
                                     <div className="mb-4">
-                                        <Rating 
-                                            value={newReview.rating} 
-                                            onChange={(_, value) => setNewReview(prev => ({ ...prev, rating: value }))} 
-                                            size="large" 
+                                        <Rating
+                                            value={newReview.rating}
+                                            onChange={(_, value) => setNewReview(prev => ({ ...prev, rating: value }))}
+                                            size="large"
                                             sx={{ color: '#007ACC' }}
                                         />
                                     </div>
-                                    <textarea 
-                                        className="min-h-[120px] w-full rounded-xl border border-gray-300 p-4 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white transition-all outline-none text-gray-700 text-lg" 
-                                        value={newReview.comment} 
-                                        onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))} 
-                                        placeholder="Share your experience with this extension..." 
+                                    <textarea
+                                        className="min-h-[120px] w-full rounded-xl border border-gray-300 p-4 focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white transition-all outline-none text-gray-700 text-lg"
+                                        value={newReview.comment}
+                                        onChange={(e) => setNewReview(prev => ({ ...prev, comment: e.target.value }))}
+                                        placeholder="Share your experience with this extension..."
                                     />
                                     <Button type="submit" className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold px-8 py-5 rounded-xl shadow-md transition-all active:scale-95">
                                         Submit Review

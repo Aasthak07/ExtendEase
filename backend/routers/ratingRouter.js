@@ -15,8 +15,8 @@ router.post('/add', async (req, res) => {
         if (!userId) {
             const authHeader = req.headers.authorization || req.headers.Authorization;
             if (authHeader && authHeader.startsWith('Bearer ')) {
-require('dotenv').config();
-// ...
+                require('dotenv').config();
+                // ...
                 const token = authHeader.split(' ')[1];
                 try {
                     const decoded = jwt.verify(token, process.env.JWT_SECRET);
