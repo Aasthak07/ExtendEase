@@ -1,0 +1,47 @@
+
+> frontend@0.1.0 build
+> next build
+
+   ▲ Next.js 15.3.4
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 8.0s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/20) ...
+   Generating static pages (5/20) 
+   Generating static pages (10/20) 
+   Generating static pages (15/20) 
+ ✓ Generating static pages (20/20)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    5.96 kB         116 kB
+├ ○ /_not-found                            977 B         102 kB
+├ ○ /about-us                            6.41 kB         111 kB
+├ ○ /admin-login                         3.09 kB         153 kB
+├ ○ /admin/addextension                  4.39 kB         111 kB
+├ ○ /admin/dashboard                     4.77 kB         109 kB
+├ ○ /admin/handle-extension-request      1.26 kB         123 kB
+├ ○ /admin/manage-extensions             5.65 kB         123 kB
+├ ○ /admin/pending-Publishers              743 B         128 kB
+├ ○ /browse-by-category                  4.34 kB         117 kB
+├ ○ /browse-extensions                   32.2 kB         144 kB
+├ ○ /features                              172 B         105 kB
+├ ○ /help                                2.79 kB         107 kB
+├ ○ /login                               2.37 kB         152 kB
+├ ○ /publisher-registration              16.1 kB         143 kB
+├ ○ /signup                              1.69 kB         152 kB
+├ ○ /user/request-extension              2.44 kB         125 kB
+└ ƒ /view-extensions/[id]                34.5 kB         148 kB
++ First Load JS shared by all             101 kB
+  ├ chunks/4bd1b696-bb5f34bae2a1811a.js  53.2 kB
+  ├ chunks/684-4746a00705f6314f.js       45.9 kB
+  └ other shared chunks (total)          1.99 kB
+
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+
+
