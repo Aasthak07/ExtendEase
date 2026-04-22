@@ -83,7 +83,15 @@ Furthermore, a centralized administrative panel was implemented to empower moder
 
 <div style="page-break-after: always"></div>
 
-  
+## PREFACE
+
+This major project report was prepared in partial fulfillment of the requirements for the Bachelor of Technology degree in Computer Science and Engineering. It details the theoretical foundation and practical implementation of "ExtendEase," a centralized marketplace designed to bridge the gap between Visual Studio Code extension developers and end-users.
+
+The motivation for this development stemmed from the increasing complexity of modern developer environments. As reliance on modular IDE tools grew, a clear need for a streamlined, secure platform to host, manage, and install these extensions was identified. While the academic curriculum established a strong foundation in software engineering, database management, and architecture design, this project was envisioned as a practical opportunity to apply those concepts to a multifaceted, real-world web application.
+
+The documentation enclosed in this report was methodically structured to trace the complete software development lifecycle of the system. Initial sections outlined the core problem and project feasibility, which subsequently guided the system analysis and design phases. The central chapters focused on the MERN stack implementation, detailing the integration of role-based dashboards, secure JWT authentication, a custom URI installation scheme, and highly responsive user interfaces. Finally, the rigorous testing methodologies and deployment strategies were documented to validate the platform's operational stability.
+
+The technical challenges encountered and resolved during the logical formulation, coding, and deployment phases provided invaluable hands-on exposure to full-stack engineering. It is hoped that this document presents a clear, authentic record of the research, academic discipline, and technical effort invested in bringing the ExtendEase project to life.
 
 <div style="page-break-after: always"></div>
 

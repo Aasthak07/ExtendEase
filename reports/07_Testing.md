@@ -18,7 +18,11 @@ System Testing evaluated the complete integrated platform. These tests mirrored 
 1. **Security Vulnerability Validation:** Standard User endpoints were heavily tested using expired, manually modified, or entirely absent JSON Web Tokens. It was confirmed that the system correctly routed those anomalous requests to HTTP 403 authorization blocks securely.
 2. **URI Dispatch Check:** Final integrated evaluation forced Google Chrome to trigger predefined `vscode://` strings, prompting operating system terminal intercepts effectively and successfully installing extensions directly into the local desktop IDE.
 
-## 7.5 Test Cases
+## 7.5 Testing Strategy and Environmental Validation
+
+The testing strategy was devised to be comprehensive, ensuring that the marketplace performed reliably across diverse environmental conditions. Rigorous cross-browser evaluations were conducted on platforms including Google Chrome, Mozilla Firefox, and Microsoft Edge to verify that the React-based User Interface maintained structural integrity and consistent CSS rendering. Furthermore, localized network latency simulations were performed to observe how the Express backend handled delayed asynchronous promises, ensuring that loading states and error modals were triggered as expected. This structured validation approach served as a prerequisite to the formalized test case execution, confirming that the underlying infrastructure was resilient enough to support the system's core functional modules.
+
+## 7.6 Test Cases
 
 **Table 7.1: UI and Integration Test Case Matrix**
 
@@ -30,3 +34,7 @@ System Testing evaluated the complete integrated platform. These tests mirrored 
 | **TC-04** | Valid Extension Upload | Publisher uniquely logged in. | Fills valid text schemas, version numbers -> Click Publish | DB structurally writes pending document. Frontend React Routes instantly dispatch 'Awaiting Verification' Modal. | **Pass** |
 | **TC-05** | Rating Limit Structural Override | User possesses previous identically matched ID rating. | User structurally submits parallel reviewing JSON package. | Node Server rejects duplication logic natively via Unique Compound indexes. | **Pass** |
 | **TC-06** | VS Code Install Protocol Trigger | Visual Studio Code logically installed locally globally. | User identically selects specific Plugin Install Button action. | OS triggers desktop IDE extension native tab prompt requesting explicit user install approval. | **Pass** |
+
+## 7.7 User Acceptance and Performance Validation
+
+Following the successful execution of the rigorous technical test cases outlined above, a final phase of User Acceptance Testing (UAT) was conducted. A controlled group of peers and academic advisors interacted with the deployed marketplace to validate the application's overall ergonomic flow, responsiveness, and functional reliability. The feedback confirmed that the system performed exceptionally well under concurrent access loads without experiencing Virtual DOM crashes or database connection drops. Consequently, the successful conclusion of these layered testing methodologies officially certified the ExtendEase platform as stable, secure, and fully prepared for real-world academic deployment.
